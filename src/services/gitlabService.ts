@@ -21,3 +21,21 @@ export const getAllMembers = async (id: number): Promise<any[]> => {
       return null;
     });
 };
+
+//Get commits for a specific user
+export const getCommits = async (projectId: number): Promise<any[]> => {
+  return await axios
+    .get(`https://gitlab.stud.idi.ntnu.no/api/v4/projects/${projectId}/repository/commits`, {
+      headers: {
+          Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+        console.log(response.data);
+      if (response.status === 200) {
+        return response.data;
+      }
+      return null;
+    });
+}
+
