@@ -22,7 +22,7 @@
     text-align: center;
     justify-content: center;
     box-sizing: border-box;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 
 .formDiv h3 {
@@ -37,26 +37,26 @@
     padding: 13px 25px;
     margin-bottom: 15px;
     background-color: #E6E6E6;
-    border-radius: 3px;
-    border:  none;
 }
 
-input:focus-visible {
-    outline: 2px solid #403866;
+.formDiv input:focus {
+    transition: 0.1s;
+    outline: 1.5px solid #403866;
 }
 
 .formDiv button {
     padding: 13px 20px;
-    width: 265px;
+    width: 268px;
     background-color: #5C56A6;
     color: white;
     margin-top: 10px;
+    transition: 0.3s;
 }
 
 .formDiv button, input {
     border: none;
-    transition: 0.3s;
     font-size: 15px;
+    border-radius: 2px;
 }
 
 .formDiv button:hover {
