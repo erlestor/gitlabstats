@@ -1,16 +1,23 @@
-import axios from 'axios';
+import axios from "axios";
 
-
-
-
-const token = "token"; // gitlab access token. Add your own token here
+const token = "glpat-gG3CkJFYeo4nVrLmcDRa"; // gitlab access token. Add your own token here
 
 //First get all members function
-export const getAllMembers = async (id: number) => {
-        const response = await axios.get(`https://gitlab.idi.ntnu.no/api/v4/groups/${id}/members?private_token=${token}`).then((response) => {
-            console.log(response.data);
-            if (response.status === 200) {
-                return response.data;
-            }
-        }).catch((error) => { console.log(error.response)});
-    }
+export const getAllMembers = async (id: number): Promise<any[]> => {
+  return await axios
+    .get(
+      `https://gitlab.stud.idi.ntnu.no/api/v4/projects/${id}/members/all`,
+      {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      console.log(response.data);
+      if (response.status === 200) {
+        return response.data;
+      }
+      return null;
+    });
+};
