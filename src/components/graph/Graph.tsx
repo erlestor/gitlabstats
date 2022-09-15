@@ -1,6 +1,4 @@
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -25,6 +23,8 @@ interface GraphProps {
 }
 
 const Graph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
+  const colors = ["#8884d8", "green", "red", "yellow", "blue"]
+
   const getDateSpan = (): Date[] => {
     const endDate = new Date()
     if (timeFrame === "week") {
@@ -113,21 +113,24 @@ const Graph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
     return data
   }
 
-  const strokeColors = ["#8884d8", "green", "red", "yellow", "blue"]
-
   return (
     <div className="chart-container">
       <h1>Commits</h1>
       <AreaChart width={800} height={500} data={getGraphData()}>
         <defs>
-          <linearGradient id="#8884d8" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-          </linearGradient>
-          <linearGradient id="green" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-          </linearGradient>
+          {colors.map((color, colorIdx) => (
+            <linearGradient
+              key={colorIdx}
+              id={color}
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <stop offset="5%" stopColor={color} stopOpacity={0.8} />
+              <stop offset="95%" stopColor={color} stopOpacity={0} />
+            </linearGradient>
+          ))}
         </defs>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
@@ -144,7 +147,7 @@ const Graph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
         <Tooltip />
         <Legend verticalAlign="bottom" />
         {showUsers.map((user: any, userIdx: number) => {
-          const color = strokeColors[userIdx]
+          const color = colors[userIdx]
           const fill = "url(#" + color + ")"
           return (
             <Area
