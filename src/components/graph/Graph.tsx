@@ -6,6 +6,8 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  AreaChart,
+  Area,
 } from "recharts"
 import "./graph.css"
 import { commits } from "./data"
@@ -116,7 +118,17 @@ const Graph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
   return (
     <div className="chart-container">
       <h1>Commits</h1>
-      <LineChart width={800} height={500} data={getGraphData()}>
+      <AreaChart width={800} height={500} data={getGraphData()}>
+        <defs>
+          <linearGradient id="#8884d8" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+          </linearGradient>
+          <linearGradient id="green" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+          </linearGradient>
+        </defs>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="name"
@@ -131,16 +143,21 @@ const Graph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
         />
         <Tooltip />
         <Legend verticalAlign="bottom" />
-        {showUsers.map((user: any, userIdx: number) => (
-          <Line
-            key={userIdx}
-            type="monotone"
-            dataKey={user}
-            stroke={strokeColors[userIdx]}
-            activeDot={{ r: 8 }}
-          />
-        ))}
-      </LineChart>
+        {showUsers.map((user: any, userIdx: number) => {
+          const color = strokeColors[userIdx]
+          const fill = "url(#" + color + ")"
+          return (
+            <Area
+              key={userIdx}
+              type="monotone"
+              dataKey={user}
+              stroke={color}
+              fillOpacity={0.8}
+              fill={fill}
+            />
+          )
+        })}
+      </AreaChart>
     </div>
   )
 }
