@@ -2,78 +2,60 @@ export const commits = [
   // erlestor
   {
     authorName: "erlestor",
-    date: "2022-09-01",
-    numberOfCommits: 1,
-  },
-  {
-    authorName: "erlestor",
-    date: "2022-09-02",
+    date: "2022-09-09",
     numberOfCommits: 3,
   },
   {
     authorName: "erlestor",
-    date: "2022-09-03",
-    numberOfCommits: 0,
-  },
-  {
-    authorName: "erlestor",
-    date: "2022-09-04",
+    date: "2022-09-11",
     numberOfCommits: 1,
   },
   {
     authorName: "erlestor",
-    date: "2022-09-05",
+    date: "2022-09-13",
     numberOfCommits: 2,
   },
   {
     authorName: "erlestor",
-    date: "2022-09-06",
-    numberOfCommits: 2,
-  },
-  {
-    authorName: "erlestor",
-    date: "2022-09-07",
+    date: "2022-09-14",
     numberOfCommits: 4,
   },
+  {
+    authorName: "erlestor",
+    date: "2022-09-15",
+    numberOfCommits: 1,
+  },
   // bruker1
+  //
+  //
   {
     authorName: "bruker1",
-    date: "2022-09-01",
+    date: "2022-09-08",
     numberOfCommits: 6,
   },
   {
     authorName: "bruker1",
-    date: "2022-09-02",
+    date: "2022-09-09",
     numberOfCommits: 1,
   },
   {
     authorName: "bruker1",
-    date: "2022-09-03",
+    date: "2022-09-10",
     numberOfCommits: 4,
   },
   {
     authorName: "bruker1",
-    date: "2022-09-04",
-    numberOfCommits: 0,
-  },
-  {
-    authorName: "bruker1",
-    date: "2022-09-05",
-    numberOfCommits: 0,
-  },
-  {
-    authorName: "bruker1",
-    date: "2022-09-06",
+    date: "2022-09-13",
     numberOfCommits: 2,
   },
   {
     authorName: "bruker1",
-    date: "2022-09-07",
+    date: "2022-09-14",
     numberOfCommits: 3,
   },
   {
     authorName: "bruker1",
-    date: "2022-09-09",
-    numberOfCommits: 0,
+    date: "2022-09-15",
+    numberOfCommits: 1,
   },
 ]
