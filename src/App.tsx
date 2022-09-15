@@ -2,9 +2,12 @@ import "./App.css"
 import Graph from "./components/graph/Graph"
 
 function App() {
+  const showUsers = ["erlestor", "bruker1"]
+  const timeFrame = "year"
+
   return (
     <div className="App">
-      <Graph />
+      <Graph showUsers={showUsers} timeFrame={timeFrame} />
     </div>
   )
 }
