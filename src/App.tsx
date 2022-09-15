@@ -3,7 +3,7 @@ import Graph from "./components/graph/Graph"
 
 function App() {
   const showUsers = ["erlestor", "bruker1"]
-  const timeFrame = "year"
+  const timeFrame = "week"
 
   return (
     <div className="App">
