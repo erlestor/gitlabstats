@@ -1,8 +1,8 @@
 .sideBar {
     background: rgb(216, 216, 216);
-    height: calc(100vh - var(--header-size));
+    min-height: calc(100vh - var(--header-size));
     min-width: calc(200px - 32px);
-    padding: 16px;
+    padding: 0 16px;
 }
 
 .sideBar input {

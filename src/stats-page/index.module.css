@@ -1,0 +1,12 @@
+.main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 16px;
+    width: calc(100% - 32px);
+}
+
+.scrollWrapper {
+    width: 100%;
+    overflow-y: scroll;
+    height: calc(100vh - var(--header-size));
+}
