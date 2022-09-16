@@ -1,15 +1,11 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import { Header } from "./header/header";
-import StatsPage from "./stats-page";
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+import { FrontPage } from './frontPage';
 
 function App() {
   return (
-    <>
-      <Header />
-      <StatsPage />
-    </>
+    <FrontPage/>
   );
 }
 
