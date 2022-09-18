@@ -1,4 +1,4 @@
-import { getAllCommitsOfUser, getAllMembers, getCommits } from "../services/gitlabService";
+import { getAllCommitsOfUser, getAllMembers, getCommits, getCommitsByDates } from "../services/gitlabService";
 
 describe("Gitlab service", () => {
   it("should be able to get all users in repo", async () => {
@@ -12,11 +12,13 @@ describe("Gitlab service", () => {
     const result = await getCommits(id);
     expect(result.length).toBeGreaterThan(0);
   });
-  it("should be able to get all commits belonging to a specific user", async () => {
+
+  it("should be able to get commits between two dates", async () => {
     const id = 17450;
-    //sondreso user id should get results
-    const userId = 3586;
-    const result = await getAllCommitsOfUser(id, userId);
+    //Two different times on the inital day of project setup
+    const startDate = "2022-09-14T09:13:31.000+02:00";
+    const endDate = "2022-09-14T13:49:38.000+02:00";
+    const result = await getCommitsByDates(id, startDate, endDate);
     expect(result.length).toBeGreaterThan(0);
   });
 });
