@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const token = "glpat-gG3CkJFYeo4nVrLmcDRa"; // gitlab access token. Add your own token here temporary
+const token = ""; // gitlab access token. Add your own token here temporary
 const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/";
 
 //First get all members function
@@ -30,7 +30,7 @@ export const getAllMembers = async (id: number) => {
 
 
 //Get commits sorted on given dates
-//Have to pass in null for startdate to get correct enddate
+//Have to pass in undefined for startdate to get correct enddate
 export const getCommits = async (projectId: number, startDate?: string, endDate?: string): Promise<any[]> => {
   let url = baselineUrl + `${projectId}/repository/commits`
   
