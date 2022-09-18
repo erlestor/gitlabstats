@@ -34,7 +34,7 @@ describe("Gitlab service", () => {
   it("should be able to get commits until a date", async () => {
     
     //Two different times on the inital day of project setup
-    const result = await getCommits(id, null, endDate);
+    const result = await getCommits(id, undefined, endDate);
     expect(result.length).toBeGreaterThan(0);
   });
 });
