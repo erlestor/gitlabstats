@@ -62,7 +62,7 @@ export const getCommitsByDates = async (projectId: number, startDate: string, en
 }
 
 //This does not work and I dont understand why
-export const getAllCommitsOfUser = async (projectId: number, userId: number): Promise<any[]> => {
+/*export const getAllCommitsOfUser = async (projectId: number, userId: number): Promise<any[]> => {
   return await axios.get(baselineUrl + `${projectId}/repository/commits`, {
       headers: {
           Authorization: `Bearer ${token}`,
@@ -75,5 +75,5 @@ export const getAllCommitsOfUser = async (projectId: number, userId: number): Pr
       }
       return null;
     });
-}
+}*/
 
