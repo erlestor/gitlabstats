@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const token = "glpat-gG3CkJFYeo4nVrLmcDRa"; // gitlab access token. Add your own token here temporary
+const token = ""; // gitlab access token. Add your own token here temporary
 const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/";
 
 //First get all members function
