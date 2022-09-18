@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const token = ""; // gitlab access token. Add your own token here temporary
+const token = "glpat-gG3CkJFYeo4nVrLmcDRa"; // gitlab access token. Add your own token here temporary
 const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/";
 
 //First get all members function
@@ -27,25 +27,26 @@ export const getAllMembers = async (id: number) => {
     });
 };
 
-//Get commits from the gitlab repository
-export const getCommits = async (projectId: number): Promise<any[]> => {
-  return await axios.get(baselineUrl + `${projectId}/repository/commits`, {
-      headers: {
-          Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-        console.log(response.data);
-      if (response.status === 200) {
-        return response.data;
-      }
-      return null;
-    });
-}
+
 
 //Get commits sorted on given dates
-export const getCommitsByDates = async (projectId: number, startDate: string, endDate: string): Promise<any[]> => {
-  return await axios.get(baselineUrl + `${projectId}/repository/commits?since=${startDate}&until=${endDate}`, {
+//Have to pass in null for startdate to get correct enddate
+export const getCommits = async (projectId: number, startDate?: string, endDate?: string): Promise<any[]> => {
+  let url = baselineUrl + `${projectId}/repository/commits`
+  
+  if(startDate && endDate) {
+    url = url + `?since=${startDate}&until=${endDate}`;
+  }
+  if (startDate && !endDate) {
+    url = url + `?since=${startDate}`;
+  }
+  if (!startDate && endDate) {
+    url = url + `?until=${endDate}`;
+  }
+ 
+
+  
+  return await axios.get(url, {
       headers: {
           Authorization: `Bearer ${token}`,
       },
@@ -58,8 +59,9 @@ export const getCommitsByDates = async (projectId: number, startDate: string, en
       }
       return null;
     });
+};
 
-}
+
 
 //This does not work and I dont understand why
 /*export const getAllCommitsOfUser = async (projectId: number, userId: number): Promise<any[]> => {
