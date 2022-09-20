@@ -1,4 +1,4 @@
-import { commits } from "./data"
+import { commits } from "./commits"
 
 interface Commit {
   authorName: string
