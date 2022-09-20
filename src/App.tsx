@@ -1,5 +1,6 @@
 import "./App.css"
-import Graph from "./components/graph/Graph"
+import CommitsGraph from "./components/graph/CommitsGraph"
+import LinesGraph from "./components/graph/LInesGraph"
 
 function App() {
   const showUsers = ["erlestor", "bruker1"]
@@ -7,7 +8,8 @@ function App() {
 
   return (
     <div className="App">
-      <Graph showUsers={showUsers} timeFrame={timeFrame} />
+      <LinesGraph showUsers={showUsers} timeFrame={timeFrame}  />
+      <CommitsGraph showUsers={showUsers} timeFrame={timeFrame}  />
     </div>
   )
 }
