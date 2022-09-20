@@ -9,7 +9,7 @@ import {
 } from "recharts"
 import "./graph.css"
 import { FC } from "react"
-import { getGraphData } from "../../service/graph"
+import { getGraphData } from "../../service/commitsToGraph"
 
 interface GraphProps {
   showUsers: string[]
