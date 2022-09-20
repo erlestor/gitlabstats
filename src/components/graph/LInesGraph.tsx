@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
   Bar,
+  Cell,
 } from "recharts"
 import "./graph.css"
 import { FC } from "react"
@@ -25,13 +26,17 @@ const LinesGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
 
   return (
     <div className="chart-container">
-      <h1>Commits</h1>
+      <h1>Lines written</h1>
       <BarChart width={730} height={250} data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
-        <Bar dataKey="lines" fill="#8884d8" />
+        <Bar dataKey="lines" fill="#8884d8">
+          {data.map((entry: any, index: number) => (
+            <Cell key={`cell-${index}`} fill={colors[index % 20]} />
+          ))}
+        </Bar>
       </BarChart>
     </div>
   )
