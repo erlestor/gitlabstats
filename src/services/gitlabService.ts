@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const token = ""; // gitlab access token. Add your own token here temporary
+const token = "glpat-gG3CkJFYeo4nVrLmcDRa"; // gitlab access token. Add your own token here temporary
 const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/";
 
 //First get all members function
@@ -60,6 +60,33 @@ export const getCommits = async (projectId: number, startDate?: string, endDate?
       return null;
     });
 };
+
+export const getIssuesAutheredBy = async (projectId: number, userId: number, afterDate?: string): Promise<any[]> => {
+
+  let url = baselineUrl + `${projectId}/issues?author_id=${userId}`
+
+  if(afterDate) {
+    url = url + `&created_after=${afterDate}`;
+  }
+  
+ 
+  return await axios.get(url, {
+      headers: {
+          Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        console.log(response.data);
+        return response.data;
+      }
+      return null;
+    }
+  );
+};
+
+
+//export const getNumberOfChangesByUser = async (projectId: number, )
 
 
 
