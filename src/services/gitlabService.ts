@@ -54,6 +54,8 @@ export const getCommits = async (projectId: number, startDate?: string, endDate?
     .then((response) => {
         console.log(response.data);
       if (response.status === 200) {
+        const data = response.data;
+        
         console.log(response.status);
         return response.data;
       }
@@ -84,6 +86,22 @@ export const getIssuesAutheredBy = async (projectId: number, userId: number, aft
     }
   );
 };
+
+export const getIssueStats = async (projectId: number): Promise<any[]> => {
+  return await axios.get(baselineUrl + `${projectId}/issues_statistics`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then((response) => {
+    console.log(response.status)
+    if (response.status === 2000) {
+      console.log(response.data);
+      return response.data;
+    }
+    return null;
+  });
+}
 
 
 //export const getNumberOfChangesByUser = async (projectId: number, )
