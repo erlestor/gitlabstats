@@ -8,8 +8,8 @@ function App() {
 
   return (
     <div className="App">
-      <LinesGraph showUsers={showUsers} timeFrame={timeFrame}  />
-      <CommitsGraph showUsers={showUsers} timeFrame={timeFrame}  />
+      <CommitsGraph showUsers={showUsers} timeFrame={timeFrame} />
+      <LinesGraph showUsers={showUsers} timeFrame={timeFrame} />
     </div>
   )
 }
