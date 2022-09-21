@@ -1,12 +1,9 @@
 import {
-  PieChart,
-  Pie,
   BarChart,
   CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   Bar,
   Cell,
 } from "recharts"
