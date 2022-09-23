@@ -1,4 +1,5 @@
 import axios from "axios";
+import { stripObject } from "./stripObject";
 
 
 const token = "glpat-gG3CkJFYeo4nVrLmcDRa"; // gitlab access token. Add your own token here temporary
@@ -10,12 +11,24 @@ interface Commit {
   author_name: String
 }
 
+interface Issue {
+  created_at: String
+  author: {
+    username: string,
+    name: string
+  }
+}
+
+interface Member {
+  id: number,
+  username: string,
+  name: string,
+}
+
 
 //First get all members function
-export const getAllMembers = async (id: number) => {
-
-  var dataList:string[] = [] 
-
+export const getAllMembers = async (id: number): Promise<Member[]> => {
+  
   return await axios
     .get(
       baselineUrl + `${id}/members/all`,
@@ -26,18 +39,20 @@ export const getAllMembers = async (id: number) => {
       }
     )
     .then((response) => {
-      console.log(response.data);
       if (response.status === 200) {
-        return response.data;
+        return (response.data as Member[]).map((e) => {
+          const data = stripObject<Member>(e, ["id", "username", "name"])
+          console.log(data)
+          return data
+        }
+        )
       }
-      return null;
+      throw Error("failed to fetch data")
+      
     });
 };
 
 const dataToGraphCommits = (data: any) => {
-  // data = [{created_at, author_name}]
-  // returns [{authorName: "", date: "ISO-string", numberOfCommits: number}]
-
   let users = data.map((commit: Commit) => commit.author_name)
   users = new Set(users)
   users = [... users]
@@ -75,7 +90,7 @@ const dataToGraphCommits = (data: any) => {
 
 //Get commits sorted on given dates
 //Have to pass in undefined for startdate to get correct enddate
-export const getCommits = async (projectId: number, startDate?: string, endDate?: string): Promise<any[]> => {
+export const getCommits = async (projectId: number, startDate?: string, endDate?: string): Promise<Commit[]> => {
   let url = baselineUrl + `${projectId}/repository/commits`
   
   if(startDate && endDate) {
@@ -98,7 +113,7 @@ export const getCommits = async (projectId: number, startDate?: string, endDate?
     .then((response) => {
       if (response.status === 200) {
         let data = response.data;
-        data = data.map((commit: any) => {
+        data = data.map((commit: Commit) => {
           const {created_at, author_name} = commit
           return {
             created_at,
@@ -106,13 +121,14 @@ export const getCommits = async (projectId: number, startDate?: string, endDate?
           }
         })
         dataToGraphCommits(data)
-        return data;
+        return data as Commit[];
       }
-      return null;
+      throw Error("Could not fetch the commit data")
     });
 };
 
-export const getIssuesAutheredBy = async (projectId: number, userId: number, afterDate?: string): Promise<any[]> => {
+
+export const getIssuesAutheredBy = async (projectId: number, userId: number, afterDate?: string): Promise<Issue[]> => {
 
   let url = baselineUrl + `${projectId}/issues?author_id=${userId}`
 
@@ -127,49 +143,17 @@ export const getIssuesAutheredBy = async (projectId: number, userId: number, aft
       },
     })
     .then((response) => {
-      if (response.status === 200) {
-        console.log(response.data);
-        return response.data;
+      if (response.status === 200) {  
+          return (response.data as Issue[]).map((e) => { 
+            e.author = stripObject(e.author, ["name", "username"])
+            const data =  stripObject<Issue>(e, ["author", "created_at"]);
+            console.log(data)
+            return data
+          })
+        
       }
-      return null;
+      throw Error("failed to fetch")
     }
   );
 };
-
-export const getIssueStats = async (projectId: number): Promise<any[]> => {
-  return await axios.get(baselineUrl + `${projectId}/issues_statistics`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-  .then((response) => {
-    console.log(response.status)
-    if (response.status === 2000) {
-      console.log(response.data);
-      return response.data;
-    }
-    return null;
-  });
-}
-
-
-//export const getNumberOfChangesByUser = async (projectId: number, )
-
-
-
-//This does not work and I dont understand why
-/*export const getAllCommitsOfUser = async (projectId: number, userId: number): Promise<any[]> => {
-  return await axios.get(baselineUrl + `${projectId}/repository/commits`, {
-      headers: {
-          Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      //filter the commits by the user id
-      if (response.status === 200) {
-        return response.data.filter((commit: any) => commit.author_id === userId);
-      }
-      return null;
-    });
-}*/
 
