@@ -3,6 +3,7 @@ import styles from "./index.module.css";
 
 export default function StatsPage() {
   return (
+    <>
     <div className="flex">
       <SideBar />
       <div className={styles.scrollWrapper}>
@@ -111,5 +112,6 @@ export default function StatsPage() {
         </main>
       </div>
     </div>
+    </>
   );
 }

@@ -9,4 +9,4 @@ export function FrontPage(props: LoginFormProps) {
             <LoginForm callback={props.callback}/>
         </div>
     );
-}
+}  
