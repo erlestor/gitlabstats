@@ -6,12 +6,12 @@ const token = "glpat-gG3CkJFYeo4nVrLmcDRa"; // gitlab access token. Add your own
 const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/";
 
 
-interface Commit {
+export interface Commit {
   created_at: String
   author_name: String
 }
 
-interface Issue {
+export interface Issue {
   created_at: String
   author: {
     username: string,
@@ -19,7 +19,7 @@ interface Issue {
   }
 }
 
-interface Member {
+export interface Member {
   id: number,
   username: string,
   name: string,
