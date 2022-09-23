@@ -1,8 +1,14 @@
-import { ChangeEvent, useContext } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { FilterOptionsContext } from ".";
+import { getAllMembers, Member } from "../services/gitlabService";
 import styles from "./side-bar.module.css";
 
 export function SideBar() {
+  const [members, setMembers] = useState<Member[] | null>(null);
+  useEffect(() => {
+    getAllMembers(17450).then((members) => setMembers(members));
+  }, []);
+
   const { filterOptions, setFilterOptions, timeFrames } =
     useContext(FilterOptionsContext)!;
 
@@ -26,30 +32,35 @@ export function SideBar() {
 
   return (
     <div className={styles.sideBar}>
-      <h3>Persons</h3>
-      {Object.keys(filterOptions.persons).map((person) => (
-        <div key={person}>
-          <input
-            checked={filterOptions.persons[person]}
-            onChange={selectPersonChange}
-            type="checkbox"
-            value={person}
-          />
-          <label>{person}</label>
-        </div>
-      ))}
-      <h3>Time frame</h3>
-      {timeFrames.map((timeFrame) => (
-        <div key={timeFrame}>
-          <input
-            checked={timeFrame === filterOptions.selectedTimeFrame}
-            onChange={() => setSelectedTimeFrame(timeFrame)}
-            type="radio"
-            value={timeFrame}
-          />
-          <label>{timeFrame}</label>
-        </div>
-      ))}
+      {members == null ? <p>Loading ...</p>
+      : (
+        <>
+          <h3>Persons</h3>
+          {members!.map((person) => (
+            <div key={person.id}>
+              <input
+                checked={filterOptions.persons[person.name]}
+                onChange={selectPersonChange}
+                type="checkbox"
+                value={person.name}
+              />
+              <label>{person.name}</label>
+            </div>
+          ))}
+          <h3>Time frame</h3>
+          {timeFrames.map((timeFrame) => (
+            <div key={timeFrame}>
+              <input
+                checked={timeFrame === filterOptions.selectedTimeFrame}
+                onChange={() => setSelectedTimeFrame(timeFrame)}
+                type="radio"
+                value={timeFrame}
+              />
+              <label>{timeFrame}</label>
+            </div>
+          ))}
+        </>
+      )}
     </div>
   );
 }
