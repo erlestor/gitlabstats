@@ -1,11 +1,9 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { FrontPage } from './frontPage';
+import StatsPage from './stats-page';
 
 function App() {
   return (
-    <FrontPage/>
+    <StatsPage/>
   );
 }
 
