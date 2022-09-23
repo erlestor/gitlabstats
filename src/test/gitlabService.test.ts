@@ -1,4 +1,4 @@
-import { getAllMembers, getCommits, getIssuesAutheredBy, getIssueStats } from "../services/gitlabService";
+import { getAllMembers, getCommits, getIssuesAutheredBy } from "../services/gitlabService";
 
 const startDate = "2022-09-14T09:13:31.000+02:00";
 const endDate = "2022-09-14T13:49:38.000+02:00";
@@ -10,7 +10,7 @@ describe("Gitlab service", () => {
     const result = await getAllMembers(id);
     expect(result.length).toBeGreaterThan(0);
   });
-
+  
   it("should be able to get all commits in repo", async () => {
     
     const result = await getCommits(id);
@@ -41,11 +41,6 @@ describe("Gitlab service", () => {
   it("should be able to get issues by a specific author", async () => {
     const authorId = 3528; //Eriks id
     const result = await getIssuesAutheredBy(id, authorId, startDate); //really before and after, but we can use the same values
-    expect(result.length).toBeGreaterThan(0);
-  });
-
-  it("should be able to get statistics about the issues", async () => {
-    const result = await getIssueStats(id); //really before and after, but we can use the same values
     expect(result.length).toBeGreaterThan(0);
   });
 });
