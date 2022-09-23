@@ -1,27 +1,40 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext } from "react";
+import { FilterOptionsContext } from ".";
 import styles from "./side-bar.module.css";
 
 export function SideBar() {
-  const personsArray = ["Magnus", "Erik", "Erlend", "Sondre"];
-  const p: { [key: string]: boolean } = {};
-  for (const person of personsArray) {
-    p[person] = true;
-  }
-  const timeFrames = ["Last week", "Last month", "Last year"];
-
-  const [persons, setPersons] = useState(p);
-  const [selectedTimeFrame, setSelectedTimeFrame] = useState(timeFrames[0]);
+  const { filterOptions, setFilterOptions, timeFrames } =
+    useContext(FilterOptionsContext)!;
 
   function selectPersonChange(evt: ChangeEvent<HTMLInputElement>) {
-    setPersons({ ...persons, [evt.target.value]: evt.target.checked });
-  } 
+    filterOptions.persons[evt.target.value] = evt.target.checked;
+    setFilterOptions({
+      ...filterOptions,
+      persons: {
+        ...filterOptions.persons,
+        [evt.target.value]: evt.target.checked,
+      },
+    });
+  }
+
+  function setSelectedTimeFrame(timeframe: string) {
+    setFilterOptions({
+      ...filterOptions,
+      selectedTimeFrame: timeframe,
+    });
+  }
 
   return (
     <div className={styles.sideBar}>
       <h3>Persons</h3>
-      {personsArray.map((person) => (
+      {Object.keys(filterOptions.persons).map((person) => (
         <div key={person}>
-          <input checked={persons[person]} onChange={selectPersonChange} type="checkbox" value={person} />
+          <input
+            checked={filterOptions.persons[person]}
+            onChange={selectPersonChange}
+            type="checkbox"
+            value={person}
+          />
           <label>{person}</label>
         </div>
       ))}
@@ -29,7 +42,7 @@ export function SideBar() {
       {timeFrames.map((timeFrame) => (
         <div key={timeFrame}>
           <input
-            checked={timeFrame == selectedTimeFrame}
+            checked={timeFrame === filterOptions.selectedTimeFrame}
             onChange={() => setSelectedTimeFrame(timeFrame)}
             type="radio"
             value={timeFrame}
