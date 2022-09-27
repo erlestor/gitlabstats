@@ -22,21 +22,51 @@ export default function StatsPage() {
     }, {}),
     selectedTimeFrame: timeFrames[0],
   });
+  const [showFilterOptionsFullScreen, setShowFilterOptionsFullScreen] =
+    useState(false);
 
   return (
-    <FilterOptionsContext.Provider value={{
-      filterOptions,
-      setFilterOptions,
-      timeFrames
-    }}>
+    <FilterOptionsContext.Provider
+      value={{
+        filterOptions,
+        setFilterOptions,
+        timeFrames,
+      }}
+    >
       <Header />
       <div className="flex">
-        <SideBar />
-        <div className={styles.scrollWrapper}>
-          <main className={styles.main}>
-            <Graphs />
-          </main>
-        </div>
+        <section
+          className={
+            styles.sideBar +
+            (showFilterOptionsFullScreen ? " " + styles.filterFullscreen : "")
+          }
+        >
+          <button
+            className={styles.setFilterBtn}
+            onClick={() => {
+              setShowFilterOptionsFullScreen(false);
+            }}
+          >
+            Set filter
+          </button>
+          <SideBar />
+        </section>
+        {!showFilterOptionsFullScreen && (
+          <div className={styles.scrollWrapper}>
+            <main className={styles.main}>
+              {/* Button for filtering options on small screens */}
+              <button
+                className={styles.filterOptionsBtn}
+                onClick={() =>
+                  setShowFilterOptionsFullScreen(!showFilterOptionsFullScreen)
+                }
+              >
+                Filter
+              </button>
+              <Graphs />
+            </main>
+          </div>
+        )}
       </div>
     </FilterOptionsContext.Provider>
   );
