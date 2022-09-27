@@ -26,9 +26,21 @@ export function SideBar() {
 
   return (
     <div className={styles.sideBar}>
+      <h3>Time frame</h3>
+      {timeFrames.map((timeFrame) => (
+        <div className={styles.inputWrapper} key={timeFrame}>
+          <input
+            checked={timeFrame === filterOptions.selectedTimeFrame}
+            onChange={() => setSelectedTimeFrame(timeFrame)}
+            type="radio"
+            value={timeFrame}
+            />
+          <label>{timeFrame}</label>
+        </div>
+      ))}
       <h3>Persons</h3>
       {Object.keys(filterOptions.persons).map((person) => (
-        <div key={person}>
+        <div className={styles.inputWrapper} key={person}>
           <input
             checked={filterOptions.persons[person]}
             onChange={selectPersonChange}
@@ -36,18 +48,6 @@ export function SideBar() {
             value={person}
           />
           <label>{person}</label>
-        </div>
-      ))}
-      <h3>Time frame</h3>
-      {timeFrames.map((timeFrame) => (
-        <div key={timeFrame}>
-          <input
-            checked={timeFrame === filterOptions.selectedTimeFrame}
-            onChange={() => setSelectedTimeFrame(timeFrame)}
-            type="radio"
-            value={timeFrame}
-          />
-          <label>{timeFrame}</label>
         </div>
       ))}
     </div>
