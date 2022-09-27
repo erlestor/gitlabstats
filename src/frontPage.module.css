@@ -43,24 +43,3 @@
     transition: 0.1s;
     outline: 1.5px solid #403866;
 }
-
-.formDiv button {
-    display: block;
-    margin: 0 auto;
-    padding: 13px 20px;
-    width: 268px;
-    background-color: #5C56A6;
-    color: white;
-    margin-top: 10px;
-    transition: 0.3s;
-}
-
-.formDiv button, input {
-    border: none;
-    font-size: 15px;
-    border-radius: 2px;
-}
-
-.formDiv button:hover {
-    background-color: #403866;
-}

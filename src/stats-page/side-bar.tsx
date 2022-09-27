@@ -35,18 +35,6 @@ export function SideBar() {
       {members == null ? <p>Loading ...</p>
       : (
         <>
-          <h3>Persons</h3>
-          {members!.map((person) => (
-            <div key={person.id}>
-              <input
-                checked={filterOptions.persons[person.name]}
-                onChange={selectPersonChange}
-                type="checkbox"
-                value={person.name}
-              />
-              <label>{person.name}</label>
-            </div>
-          ))}
           <h3>Time frame</h3>
           {timeFrames.map((timeFrame) => (
             <div key={timeFrame}>
@@ -57,6 +45,18 @@ export function SideBar() {
                 value={timeFrame}
               />
               <label>{timeFrame}</label>
+            </div>
+          ))}
+          <h3>Persons</h3>
+          {members!.map((person) => (
+            <div key={person.id}>
+              <input
+                checked={filterOptions.persons[person.name]}
+                onChange={selectPersonChange}
+                type="checkbox"
+                value={person.name}
+              />
+              <label>{person.name}</label>
             </div>
           ))}
         </>
