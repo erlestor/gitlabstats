@@ -1,12 +1,12 @@
 import React from "react";
 import styles from "./frontPage.module.css";
 import background from './images/background.jpg'
-import LoginForm  from './LoginForm'
+import LoginForm, { LoginFormProps }  from './LoginForm'
 
-export function FrontPage() {
+export function FrontPage(props: LoginFormProps) {
     return (
         <div style={{backgroundImage: `url(${background})`}} className={styles.loginDiv}>  
-            <LoginForm/>
+            <LoginForm callback={props.callback}/>
         </div>
     );
-}
+}  

@@ -1,9 +1,8 @@
-import { SideBar } from "./side-bar";
-import styles from "./index.module.css";
-import Graphs from "./graphs";
-import { Header } from "../header/header";
-import { FilterOptions } from "./IFilterOptions";
 import { createContext, useState } from "react";
+import Graphs from "./graphs";
+import { FilterOptions } from "./IFilterOptions";
+import styles from "./index.module.css";
+import { SideBar } from "./side-bar";
 
 export const FilterOptionsContext = createContext<{
   filterOptions: FilterOptions;
@@ -30,7 +29,6 @@ export default function StatsPage() {
         timeFrames,
       }}
     >
-      <Header />
       <div className="flex">
         <section
           className={
