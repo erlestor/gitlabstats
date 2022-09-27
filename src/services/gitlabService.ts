@@ -2,7 +2,8 @@ import axios from "axios";
 import { stripObject } from "./stripObject";
 
 
-const token = "glpat-gG3CkJFYeo4nVrLmcDRa"; // gitlab access token. Add your own token here temporary
+export const token = null; // gitlab access token. Add your own token here temporary
+export const projectId = null
 const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/";
 
 
