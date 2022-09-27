@@ -8,64 +8,79 @@ interface Commit {
 
 interface Datapoint {
   name: string
-  [key: string]: number | string
+  [key: string]: any
 }
 
+// returns the start and end date of a given timeFrame
 const getDateSpan = (timeFrame: string): Date[] => {
   const endDate = new Date()
-  if (timeFrame === "week") {
-    const startDate = new Date(
-      endDate.getFullYear(),
-      endDate.getMonth(),
-      endDate.getDate() - 7
-    )
-    return [startDate, endDate]
-  }
-  if (timeFrame === "month") {
-    const startDate = new Date(
-      endDate.getFullYear(),
-      endDate.getMonth() - 1,
-      endDate.getDate()
-    )
-    return [startDate, endDate]
-  }
-  if (timeFrame === "year") {
-    const startDate = new Date(
-      endDate.getFullYear() - 1,
-      endDate.getMonth(),
-      endDate.getDate()
-    )
-    return [startDate, endDate]
-  }
-  return []
+  let startDate = new Date()
+
+  let dayOffset = 0
+  let monthOffset = 0
+  let yearOffset = 0
+
+  if (timeFrame === "week") dayOffset = 7
+  if (timeFrame === "month") monthOffset = 1
+  if (timeFrame === "year") yearOffset = 1
+
+  startDate = new Date(
+    endDate.getFullYear() - yearOffset,
+    endDate.getMonth() - monthOffset,
+    endDate.getDate() - dayOffset
+  )
+
+  return [startDate, endDate]
 }
 
-const getDatesInRange = (startDate: Date, endDate: Date) => {
-  const date = new Date(startDate.getTime())
+const getDatesInRange = (timeFrame: string, startDate: Date, endDate: Date) => {
+  const date = new Date(startDate)
   const dates = []
+
   while (date <= endDate) {
     dates.push(new Date(date))
-    date.setDate(date.getDate() + 1)
+    if (timeFrame === "year") date.setMonth(date.getMonth() + 1)
+    else date.setDate(date.getDate() + 1)
   }
+
+  dates.shift()
   return dates
 }
 
-const getFormattedDate = (date: Date) => {
+const getFormattedDate = (timeFrame: string, date: Date) => {
   const day = date.getDate().toString()
-  const month = (date.getMonth() + 1).toString()
-  // const year = date.getFullYear().toString()
-  return day + "/" + month
+  const month = date.getMonth() + 1
+  const year = date.getFullYear().toString()
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ]
+
+  if (timeFrame === "year") return "" + months[month - 1]
+
+  return day + "/" + month.toString()
 }
 
-const addDatesAsData = (
+const getDatesAsData = (
   timeFrame: string,
-  showUsers: string[],
-  data: Datapoint[]
-) => {
+  showUsers: string[]
+): Datapoint[] => {
   const dateSpan = getDateSpan(timeFrame)
-  const datesInRange = getDatesInRange(dateSpan[0], dateSpan[1])
+  const datesInRange = getDatesInRange(timeFrame, dateSpan[0], dateSpan[1])
+  const data: Datapoint[] = []
+
   datesInRange.forEach((date) => {
-    const formattedDate = getFormattedDate(date)
+    const formattedDate = getFormattedDate(timeFrame, date)
     let datapoint = { name: formattedDate }
     showUsers.forEach((user) => {
       datapoint = {
@@ -75,30 +90,39 @@ const addDatesAsData = (
     })
     data.push(datapoint)
   })
+  console.log("addDatesAsData()", data)
+  return data
 }
 
 const inDateSpan = (timeFrame: string, commit: Commit) => {
   const dateSpan = getDateSpan(timeFrame)
-  const commitDate = new Date(commit.date)
   const startDate = dateSpan[0]
   const endDate = dateSpan[1]
+
+  const commitDate = new Date(commit.date)
   return commitDate >= startDate && commitDate <= endDate
 }
 
-export const getGraphData = (timeFrame: string, showUsers: string[]) => {
-  const data: Datapoint[] = []
-  addDatesAsData(timeFrame, showUsers, data)
+export const getGraphData = (
+  timeFrame: string,
+  showUsers: string[]
+): Datapoint[] => {
+  // data is now a list with all the dates/months and the user values for each month set to 0
+  const data = getDatesAsData(timeFrame, showUsers)
+
   const filteredCommits = commits.filter((commit) =>
     inDateSpan(timeFrame, commit)
   )
 
   filteredCommits.forEach((commit) => {
     const date = new Date(commit.date)
-    const formattedDate = getFormattedDate(date)
+    const formattedDate = getFormattedDate(timeFrame, date)
+
     const datapointIdx = data.findIndex((d) => d.name === formattedDate)
     data[datapointIdx] = {
       ...data[datapointIdx],
-      [commit.authorName]: commit.numberOfCommits,
+      [commit.authorName]:
+        data[datapointIdx][commit.authorName] + commit.numberOfCommits,
     }
   })
 
