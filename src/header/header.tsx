@@ -1,7 +1,4 @@
-import React, { useState } from "react";
 import styles from "./header.module.css";
-
-
 
 export default function Header(props: {
     setShowFrontPage: (show: boolean) => void
