@@ -1,11 +1,9 @@
 import axios from "axios";
 import { stripObject } from "./stripObject";
+import { getRepoInformation } from "../getRepoInformation";
 
 
-export const token = null; // gitlab access token. Add your own token here temporary
-export const projectId = null
 const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/";
-
 
 export interface Commit {
   created_at: String
@@ -35,7 +33,7 @@ export const getAllMembers = async (id: number): Promise<Member[]> => {
       baselineUrl + `${id}/members/all`,
       {
         headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${getRepoInformation().token}`,
         },
       }
     )
@@ -108,7 +106,7 @@ export const getCommits = async (projectId: number, startDate?: string, endDate?
   
   return await axios.get(url, {
       headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getRepoInformation().token}`,
       },
     })
     .then((response) => {
@@ -140,7 +138,7 @@ export const getIssuesAutheredBy = async (projectId: number, userId: number, aft
  
   return await axios.get(url, {
       headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getRepoInformation().token}`,
       },
     })
     .then((response) => {

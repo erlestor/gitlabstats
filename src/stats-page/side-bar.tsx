@@ -1,12 +1,13 @@
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { FilterOptionsContext } from ".";
+import { getRepoInformation } from "../getRepoInformation";
 import { getAllMembers, Member } from "../services/gitlabService";
 import styles from "./side-bar.module.css";
 
 export function SideBar() {
   const [members, setMembers] = useState<Member[] | null>(null);
   useEffect(() => {
-    getAllMembers(17450).then((members) => setMembers(members));
+    getAllMembers(getRepoInformation().projectId).then((members) => setMembers(members));
   }, []);
 
   const { filterOptions, setFilterOptions, timeFrames } =

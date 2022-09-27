@@ -2,20 +2,28 @@ import {} from "./services/gitlabService";
 
 export interface RepoInformation {
   token: string;
-  projectId: string;
+  projectId: number;
 }
 
 let repoInformation: RepoInformation | null = null;
 
-const getLocalStorageToken = () => {
+const getLocalStorageToken = (): string | null => {
   return localStorage.getItem("token");
 };
 
-const getLocalStorageProjectId = () => {
-  return localStorage.getItem("projectId");
+const getLocalStorageProjectId = (): number | null => {
+  const v = localStorage.getItem("projectId");
+  if (!v) {
+    return null;
+  }
+  return parseInt(v);
 };
 
-export const getRepoInformation = (): RepoInformation | null => {
+export const hasRepoInformation = (): boolean => {
+  return !!repoInformation || (!!getLocalStorageToken() && !!getLocalStorageProjectId());
+}
+
+export const getRepoInformation = (): RepoInformation => {
   if (repoInformation) {
     return repoInformation;
   }
@@ -25,13 +33,12 @@ export const getRepoInformation = (): RepoInformation | null => {
       projectId: getLocalStorageProjectId()!,
     };
     return repoInformation;
-  } else {
-    return null;
-    /*show login page*/
   }
+  throw new Error("No repo information found");
 };
 
-export const setRepoInformation = (token: string, projectId: string) => {
-  localStorage.setItem("token", token);
-  localStorage.setItem("projectId", projectId);
+export const saveRepoInformation = (r: RepoInformation) => {
+  repoInformation = r;
+  localStorage.setItem("token", r.token);
+  localStorage.setItem("projectId", r.projectId.toString());
 };
