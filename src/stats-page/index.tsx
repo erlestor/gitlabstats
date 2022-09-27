@@ -15,10 +15,7 @@ export default function StatsPage() {
   const timeFrames = ["Last week", "Last month", "Last year"];
 
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
-    persons: personsArray.reduce((prev: { [key: string]: boolean }, cur) => {
-      prev[cur] = true;
-      return prev;
-    }, {}),
+    persons: {},
     selectedTimeFrame: timeFrames[0],
   });
   const [showFilterOptionsFullScreen, setShowFilterOptionsFullScreen] =

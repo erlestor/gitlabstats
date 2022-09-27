@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { FrontPage } from './frontPage';
 import StatsPage from './stats-page';
 import Header from './header/header'
+import { hasRepoInformation, saveRepoInformation, RepoInformation } from './getRepoInformation';
 
 function App() {
 
-  const [showFrontPage, setShowFrontPage] = useState(true);
+  const [showFrontPage, setShowFrontPage] = useState(!hasRepoInformation());
 
   if (!showFrontPage) {
     return <>
@@ -18,7 +18,8 @@ function App() {
 
   return (
     <>
-      <FrontPage callback={(token, password) => {
+      <FrontPage callback={(repoInformation: RepoInformation) => {
+        saveRepoInformation(repoInformation);
         setShowFrontPage(false);
       }} />
     </>

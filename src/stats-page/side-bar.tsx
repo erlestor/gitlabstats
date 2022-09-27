@@ -1,8 +1,15 @@
-import { ChangeEvent, useContext } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { FilterOptionsContext } from ".";
+import { getRepoInformation } from "../getRepoInformation";
+import { getAllMembers, Member } from "../services/gitlabService";
 import styles from "./side-bar.module.css";
 
 export function SideBar() {
+  const [members, setMembers] = useState<Member[] | null>(null);
+  useEffect(() => {
+    getAllMembers(getRepoInformation().projectId).then((members) => setMembers(members));
+  }, []);
+
   const { filterOptions, setFilterOptions, timeFrames } =
     useContext(FilterOptionsContext)!;
 
@@ -26,30 +33,35 @@ export function SideBar() {
 
   return (
     <div className={styles.sideBar}>
-      <h3>Time frame</h3>
-      {timeFrames.map((timeFrame) => (
-        <div className={styles.inputWrapper} key={timeFrame}>
-          <input
-            checked={timeFrame === filterOptions.selectedTimeFrame}
-            onChange={() => setSelectedTimeFrame(timeFrame)}
-            type="radio"
-            value={timeFrame}
-            />
-          <label>{timeFrame}</label>
-        </div>
-      ))}
-      <h3>Persons</h3>
-      {Object.keys(filterOptions.persons).map((person) => (
-        <div className={styles.inputWrapper} key={person}>
-          <input
-            checked={filterOptions.persons[person]}
-            onChange={selectPersonChange}
-            type="checkbox"
-            value={person}
-          />
-          <label>{person}</label>
-        </div>
-      ))}
+      {members == null ? <p>Loading ...</p>
+      : (
+        <>
+          <h3>Time frame</h3>
+          {timeFrames.map((timeFrame) => (
+            <div key={timeFrame}>
+              <input
+                checked={timeFrame === filterOptions.selectedTimeFrame}
+                onChange={() => setSelectedTimeFrame(timeFrame)}
+                type="radio"
+                value={timeFrame}
+              />
+              <label>{timeFrame}</label>
+            </div>
+          ))}
+          <h3>Persons</h3>
+          {members!.map((person) => (
+            <div key={person.id}>
+              <input
+                checked={filterOptions.persons[person.name]}
+                onChange={selectPersonChange}
+                type="checkbox"
+                value={person.name}
+              />
+              <label>{person.name}</label>
+            </div>
+          ))}
+        </>
+      )}
     </div>
   );
 }

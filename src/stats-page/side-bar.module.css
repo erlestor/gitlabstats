@@ -1,6 +1,7 @@
 .sideBar {
     background: rgb(216, 216, 216);
-    min-height: calc(100vh - var(--header-size));
+    height: calc(100vh - var(--header-size));
+    overflow-y: scroll;
     min-width: calc(200px - 32px);
     padding: 0 16px;
 }
