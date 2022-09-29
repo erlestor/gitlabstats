@@ -1,5 +1,7 @@
 import { getAllMembers, getCommits, getIssuesAutheredBy } from "../services/gitlabService";
 
+//These tests does not work because the application is storing the token and the url in the local storage
+
 const startDate = "2022-09-14T09:13:31.000+02:00";
 const endDate = "2022-09-14T13:49:38.000+02:00";
 const id = 17450;
