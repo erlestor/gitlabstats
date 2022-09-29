@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { FilterOptionsContext } from "."
 import CommitsGraph from "../components/graph/CommitsGraph"
+import IssuesGraph from "../components/graph/IssuesGraph"
 
 export default function Graphs() {
   const { filterOptions } = useContext(FilterOptionsContext)!
@@ -23,7 +24,7 @@ export default function Graphs() {
 
   return (
     <>
-      <p>
+      <p style={{ maxWidth: "600px" }}>
         Timeframe: {filterOptions.selectedTimeFrame} | selected persons:{" "}
         {Object.keys(filterOptions.persons)
           .reduce((acc: string[], cur) => {
@@ -35,6 +36,7 @@ export default function Graphs() {
           .join(", ")}
       </p>
       <CommitsGraph showUsers={getShowUsers()} timeFrame={getTimeFrame()} />
+      <IssuesGraph showUsers={getShowUsers()} timeFrame={getTimeFrame()} />
     </>
   )
 }
