@@ -1,8 +1,10 @@
 .main {
-  max-width: 600px;
   margin: 0 auto;
   padding: 0 16px;
   width: calc(100% - 32px);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .scrollWrapper {
@@ -16,22 +18,23 @@
 }
 
 .filterOptionsBtn {
-    display: none;
+  display: none;
 }
 
 .setFilterBtn {
-    display: none;
+  display: none;
 }
 
-.setFilterBtn, .filterOptionsBtn {
-    text-align: center;
-    margin-top: 20px;
+.setFilterBtn,
+.filterOptionsBtn {
+  text-align: center;
+  margin-top: 20px;
 }
 
 .filterFullscreen {
-    display: block !important;
-    width: 100vw;
-    background: rgb(216, 216, 216);
+  display: block !important;
+  width: 100vw;
+  background: rgb(216, 216, 216);
 }
 
 @media (max-width: 720px) {
