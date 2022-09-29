@@ -151,3 +151,73 @@ export const getIssuesAutheredBy = async (
       throw Error("failed to fetch")
     })
 }
+
+const dataToGraphIssues = (data: any) => {
+  console.log("data", data)
+  let users = data.map((issue: Issue) => issue.author.name)
+  users = new Set(users)
+  users = [...users]
+  // users are now all the unique author names that have created an issue
+
+  const graphIssues: any = []
+  users.forEach((user: any) => {
+    // get commits for a single user
+    const issues = data.filter((issue: Issue) => issue.author.name === user)
+    // sort by date ascending
+    issues.sort(
+      (i1: any, i2: any) =>
+        new Date(i1.created_at).getTime() - new Date(i2.created_at).getTime()
+    )
+
+    const issueData: any = [] // {authorName, date, numberOfCommits}
+
+    // now count the number of commits on each date in commits
+    issues.forEach((issue: Issue) => {
+      const date = issue.created_at.substring(0, 10)
+      // if date is already added
+      const issuesAtDate = issueData.filter(
+        (i: any) =>
+          new Date(issue.created_at.substring(0, 10)).getTime() ===
+          new Date(i.date).getTime()
+      )
+      if (issuesAtDate.length > 0) {
+        issuesAtDate[0].numberOfIssues += 1
+      } else {
+        issueData.push({ authorName: user, date: date, numberOfIssues: 1 })
+      }
+    })
+    graphIssues.push(issueData)
+  })
+
+  return graphIssues
+}
+
+export const getIssues = async (
+  projectId: number,
+  afterDate?: string
+): Promise<Issue[]> => {
+  let url = baselineUrl + `${projectId}/issues`
+
+  if (afterDate) {
+    url = url + `&created_after=${afterDate}`
+  }
+
+  return await axios
+    .get(url, {
+      headers: {
+        Authorization: `Bearer ${getRepoInformation().token}`,
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        const data = (response.data as Issue[]).map((e) => {
+          e.author = stripObject(e.author, ["name", "username"])
+          const data = stripObject<Issue>(e, ["author", "created_at"])
+          return data
+        })
+        const graphData = dataToGraphIssues(data)
+        return graphData
+      }
+      throw Error("failed to fetch")
+    })
+}
