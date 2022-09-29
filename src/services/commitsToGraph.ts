@@ -1,5 +1,3 @@
-import { commits } from "./commits"
-
 interface Commit {
   authorName: string
   date: string
@@ -90,7 +88,6 @@ const getDatesAsData = (
     })
     data.push(datapoint)
   })
-  console.log("addDatesAsData()", data)
   return data
 }
 
@@ -105,13 +102,20 @@ const inDateSpan = (timeFrame: string, commit: Commit) => {
 
 export const getGraphData = (
   timeFrame: string,
-  showUsers: string[]
+  showUsers: string[],
+  commits: any
 ): Datapoint[] => {
   // data is now a list with all the dates/months and the user values for each month set to 0
   const data = getDatesAsData(timeFrame, showUsers)
 
-  const filteredCommits = commits.filter((commit) =>
-    inDateSpan(timeFrame, commit)
+  let joinedCommits: Commit[] = []
+  commits.forEach((commitList: any) => {
+    joinedCommits = joinedCommits.concat(commitList)
+  })
+
+  const filteredCommits = joinedCommits.filter(
+    (commit) =>
+      inDateSpan(timeFrame, commit) && showUsers.includes(commit.authorName)
   )
 
   filteredCommits.forEach((commit) => {
