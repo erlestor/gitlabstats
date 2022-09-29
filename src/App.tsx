@@ -1,14 +1,35 @@
+import { useState } from "react"
 import "./App.css"
-import CommitsGraph from "./components/graph/CommitsGraph"
+import { FrontPage } from "./frontPage"
+import StatsPage from "./stats-page"
+import Header from "./header/header"
+import {
+  hasRepoInformation,
+  saveRepoInformation,
+  RepoInformation,
+} from "./getRepoInformation"
 
 function App() {
-  const showUsers = ["erlestor", "bruker1"]
-  const timeFrame = "month"
+  const [showFrontPage, setShowFrontPage] = useState(!hasRepoInformation())
+
+  if (!showFrontPage) {
+    return (
+      <>
+        <Header setShowFrontPage={setShowFrontPage} />
+        <StatsPage />
+      </>
+    )
+  }
 
   return (
-    <div className="App">
-      <CommitsGraph showUsers={showUsers} timeFrame={timeFrame} />
-    </div>
+    <>
+      <FrontPage
+        callback={(repoInformation: RepoInformation) => {
+          saveRepoInformation(repoInformation)
+          setShowFrontPage(false)
+        }}
+      />
+    </>
   )
 }
 

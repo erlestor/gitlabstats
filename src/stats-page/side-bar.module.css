@@ -1,0 +1,35 @@
+.sideBar {
+    background: rgb(216, 216, 216);
+    height: calc(100vh - var(--header-size));
+    overflow-y: scroll;
+    min-width: calc(200px - 32px);
+    padding: 0 16px;
+}
+
+.sideBar input {
+    margin: 0 5px;
+    width: 17px;
+    height: 17px;
+}
+
+.inputWrapper {
+    display: flex;
+    align-items: center;
+}
+
+@media screen and (max-width: 720px) {
+    .sideBar {
+        max-width: 268px;
+        margin: 0 auto;
+    }
+
+    .sideBar input {
+        width: 25px;
+        height: 25px;
+        margin: 10px;
+        font-size: 20px;
+    }
+    h3 {
+        font-size: 30px;
+    }
+}
