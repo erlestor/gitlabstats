@@ -2,8 +2,14 @@ import { render } from '@testing-library/react';
 import App from '../App';
 
 describe ('App, component hierarcy', () => {
-    it('renders correctly', () => {
-        expect(1+1).toBe(2);
-    })
+    //Snapshot test of the DOM structure at start up.
+    it('renders DOM correctly', () => {
+        const tree = render(<App />);
+        expect(tree).toMatchSnapshot();
+    });
 });
+
+
+
+
 
