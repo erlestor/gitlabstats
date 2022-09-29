@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-//This is the snapshot file for the `test` suite. It creates a snapshot of the rendered DOM.
 
+//The snapshot at start up.
 exports[`App, component hierarcy renders DOM correctly 1`] = `
 Object {
   "asFragment": [Function],
