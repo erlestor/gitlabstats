@@ -48,7 +48,7 @@ export default class LoginForm extends React.Component<
             required
           />
           <input
-            placeholder="Project ID"
+            placeholder="ProjectID"
             type="number"
             name="projectId"
             min={1}
@@ -56,7 +56,7 @@ export default class LoginForm extends React.Component<
             onChange={this.handleChange}
             required
           />
-          <button>Logg inn</button>
+          <button data-testid="loginBtn">Logg inn</button>
         </form>
       </div>
     );

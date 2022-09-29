@@ -3,8 +3,7 @@ import App from '../App';
 
 describe ('App, component hierarcy', () => {
     it('renders correctly', () => {
-        const tree = render
-        
-    }
+        expect(1+1).toBe(2);
+    })
 });
 

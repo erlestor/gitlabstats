@@ -1,4 +1,6 @@
+import { saveRepoInformation } from "../getRepoInformation";
 import { getAllMembers, getCommits, getIssuesAutheredBy } from "../services/gitlabService";
+import { LocalStorageMock } from "./LocalstorageMock";
 
 //These tests does not work because the application is storing the token and the url in the local storage
 
@@ -7,6 +9,13 @@ const endDate = "2022-09-14T13:49:38.000+02:00";
 const id = 17450;
 
 describe("Gitlab service", () => {
+  beforeAll(() => {
+    global.localStorage = LocalStorageMock();
+    saveRepoInformation({
+      token: "glpat-gG3CkJFYeo4nVrLmcDRa",
+      projectId: 17450,
+    })
+  })
   it("should be able to get all users in repo", async () => {
     
     const result = await getAllMembers(id);
