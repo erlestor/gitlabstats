@@ -12,9 +12,10 @@
 }
 
 .header button {
-  display: block;
-  margin-right: 30px;
+  margin-right: 0px;
   border-radius: 0px;
   background-color: #0075FF;
   color: white;
+  width: 120px;   
+  cursor: pointer;
 }
