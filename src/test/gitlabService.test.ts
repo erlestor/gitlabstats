@@ -2,7 +2,8 @@ import { saveRepoInformation } from "../getRepoInformation";
 import { getAllMembers, getCommits, getIssuesAutheredBy } from "../services/gitlabService";
 import { LocalStorageMock } from "./LocalstorageMock";
 
-//These tests does not work because the application is storing the token and the url in the local storage
+//These test are only supposed to run to get information about the api calls in gitlabService.ts
+//They are not supposed to test the gitlab api service.
 
 const startDate = "2022-09-14T09:13:31.000+02:00";
 const endDate = "2022-09-14T13:49:38.000+02:00";
