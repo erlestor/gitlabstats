@@ -153,7 +153,6 @@ export const getIssuesAutheredBy = async (
 }
 
 const dataToGraphIssues = (data: any) => {
-  console.log("data", data)
   let users = data.map((issue: Issue) => issue.author.name)
   users = new Set(users)
   users = [...users]
