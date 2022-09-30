@@ -1,4 +1,5 @@
 import { createContext, useState } from "react"
+import { getFilterInformation } from "../getRepoInformation"
 import Graphs from "./graphs"
 import { FilterOptions } from "./IFilterOptions"
 import styles from "./index.module.css"
@@ -14,9 +15,8 @@ export default function StatsPage() {
   const timeFrames = ["Last week", "Last month", "Last year"]
 
   const [filterOptions, setFilterOptions] = useState<FilterOptions>(() => {
-    const sessionStorage = window.sessionStorage.getItem("filterOptions")
-
-    if (sessionStorage) return JSON.parse(sessionStorage)
+    const filterInformation = getFilterInformation()
+    if (filterInformation) return filterInformation
     return { persons: {}, selectedTimeFrame: timeFrames[0] }
   })
 
