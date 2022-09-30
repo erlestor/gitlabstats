@@ -91,13 +91,13 @@ export const getCommits = async (
   let url = baselineUrl + `${projectId}/repository/commits?per_page=9999`
 
   if (startDate && endDate) {
-    url = url + `?since=${startDate}&until=${endDate}`
+    url = url + `&since=${startDate}&until=${endDate}`
   }
   if (startDate && !endDate) {
-    url = url + `?since=${startDate}`
+    url = url + `&since=${startDate}`
   }
   if (!startDate && endDate) {
-    url = url + `?until=${endDate}`
+    url = url + `&until=${endDate}`
   }
 
   return await axios

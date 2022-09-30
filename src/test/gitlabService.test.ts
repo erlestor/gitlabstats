@@ -45,7 +45,7 @@ describe("Gitlab service", () => {
     expect(result.length).toBeGreaterThan(0)
   })
 
-  it("should be able to get issues by a specific author", async () => {
+  it("should be able to get issues", async () => {
     const result = await getIssues(id) //really before and after, but we can use the same values
     expect(result.length).toBeGreaterThan(0)
   })
