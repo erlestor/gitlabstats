@@ -1,7 +1,7 @@
 import React from "react"
 import styles from "./frontPage.module.css"
-import { getRepoInformation, RepoInformation } from "./getRepoInformation"
-import { checkIfValidId, getAllMembers } from "./services/gitlabService"
+import { RepoInformation } from "./getRepoInformation"
+import { validateRepoInformation } from "./services/gitlabService"
 
 export type LoginFormProps = {
   callback: (repoInformation: RepoInformation) => void
@@ -11,7 +11,7 @@ export default class LoginForm extends React.Component<
   LoginFormProps,
   {
     token: string
-    projectId: number | undefined
+    projectId: number | string
     error: string
   }
 > {
@@ -20,7 +20,7 @@ export default class LoginForm extends React.Component<
 
     this.state = {
       token: "",
-      projectId: undefined,
+      projectId: "",
       error: "",
     }
 
@@ -35,16 +35,14 @@ export default class LoginForm extends React.Component<
   async handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault()
     const token = this.state.token
-    const projectId = this.state.projectId
+    const projectId = Number(this.state.projectId)
 
-    await checkIfValidId(Number(projectId), token)
+    await validateRepoInformation({projectId, token})
       .then((valid) => {
         if (valid) {
           this.setState({ error: "" })
           this.props.callback(this.state as RepoInformation)
-          return
         }
-        this.setState({ error: "Wrong token or projectId" })
       })
       .catch((err) => {
         this.setState({ error: "Wrong token or projectId" })
@@ -74,7 +72,7 @@ export default class LoginForm extends React.Component<
             required
           />
           <button data-testid="loginBtn">Logg inn</button>
-          {this.state.error.length > 0 && (
+          {!!this.state.error && (
             <p className={styles.error}>{this.state.error}</p>
           )}
         </form>

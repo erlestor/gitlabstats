@@ -1,8 +1,9 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import App from "../App";
 import userEvent from "@testing-library/user-event";
 import { LocalStorageMock } from "./LocalstorageMock";
+import * as gitlabService from "../services/gitlabService";
 
 describe("App", () => {
   beforeAll(() => {
@@ -12,7 +13,7 @@ describe("App", () => {
   const testToken = "testToken";
   const testProjectId = "414312";
 
-  it("renders App component", () => {
+  it("renders App component", async () => {
     render(<App />);
     expect(screen.getByText("Logg inn")).toBeInTheDocument();
     // insert token and project id
@@ -22,10 +23,12 @@ describe("App", () => {
     fireEvent.change(screen.getByPlaceholderText("Token"), {
       target: { value: testToken },
     });
+    // mock validate token function
+    jest.spyOn(gitlabService, "validateRepoInformation").mockResolvedValue(true)  
     // click login button
     userEvent.click(screen.getByTestId("loginBtn"));
     // check if login was successful
-    expect(screen.queryByText("Logg inn")).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByText("Logg inn")).not.toBeInTheDocument());
 
     // should get straight to stats page
     render(<App />);
