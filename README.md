@@ -9,6 +9,7 @@ Vi har imidlertid valgt å gjøre loginForm som en class. Dette er på bakgrunn 
 ## Context API'et
 
 ## AJAX
+Vi har valgt å bruke tredjepartsbiblioteket axios for å laste data fra GitLab. Flere på gruppa hadde erfaring med axios fra før og vi valgte derfor denne løsningen. Axios er kompatible i mange weblesere og har god bakoverkompatibilitet med eldre nettlesere. Vi kunne ha brukt andre løsninger, som for eksempel fetch() API'et. Funksjonene som henter data fra GitLab ligger i gitlabService.ts.
 
 ## HTML Web Storage
 
