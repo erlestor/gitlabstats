@@ -11,10 +11,21 @@
     line-height: var(--header-size);
 }
 
+@media screen and (max-width: 720px) {
+    .header {
+        height: 70px;
+    }
+    .header h1 {
+        font-size: 25px;
+        margin-left: 20px;
+    }
+}
+
 .header button {
-  display: block;
-  margin-right: 30px;
+  margin-right: 0px;
   border-radius: 0px;
   background-color: #0075FF;
   color: white;
+  width: 120px;   
+  cursor: pointer;
 }

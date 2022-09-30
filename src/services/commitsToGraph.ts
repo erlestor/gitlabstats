@@ -41,7 +41,7 @@ const getDatesInRange = (timeFrame: string, startDate: Date, endDate: Date) => {
     else date.setDate(date.getDate() + 1)
   }
 
-  // dates.shift()
+  if (timeFrame === "year") dates.shift()
   return dates
 }
 

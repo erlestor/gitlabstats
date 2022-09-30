@@ -88,7 +88,7 @@ export const getCommits = async (
   startDate?: string,
   endDate?: string
 ): Promise<Commit[]> => {
-  let url = baselineUrl + `${projectId}/repository/commits`
+  let url = baselineUrl + `${projectId}/repository/commits?per_page=9999`
 
   if (startDate && endDate) {
     url = url + `?since=${startDate}&until=${endDate}`
@@ -195,7 +195,7 @@ export const getIssues = async (
   projectId: number,
   afterDate?: string
 ): Promise<Issue[]> => {
-  let url = baselineUrl + `${projectId}/issues`
+  let url = baselineUrl + `${projectId}/issues?per_page=9999`
 
   if (afterDate) {
     url = url + `&created_after=${afterDate}`
