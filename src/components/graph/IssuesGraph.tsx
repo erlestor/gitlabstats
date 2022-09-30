@@ -43,7 +43,7 @@ const IssuesGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
       <h1>Issues</h1>
       {showUsers.length > 0 ? (
         <ResponsiveContainer width="100%" height={450}>
-          <AreaChart data={graphData}>
+          <AreaChart data={graphData} margin={{ left: -35 }}>
             <defs>
               {colors.map((color, colorIdx) => (
                 <linearGradient
@@ -64,13 +64,7 @@ const IssuesGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
               dataKey="name"
               // label={{ value: "date", position: "insideBottomRight", offset: 0 }}
             />
-            <YAxis
-              label={{
-                value: "number of issues",
-                angle: -90,
-                position: "insideLeft",
-              }}
-            />
+            <YAxis />
             <Tooltip />
             <Legend verticalAlign="bottom" />
             {showUsers.map((user, userIdx) => {
