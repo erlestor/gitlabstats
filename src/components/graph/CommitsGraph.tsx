@@ -41,9 +41,10 @@ const CommitsGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
   return (
     <div className="chart-container">
       <h1>Commits</h1>
+      <h5>number of commits</h5>
       {showUsers.length > 0 ? (
         <ResponsiveContainer width="100%" height={450}>
-          <AreaChart data={graphData}>
+          <AreaChart data={graphData} margin={{ left: -35 }}>
             <defs>
               {colors.map((color, colorIdx) => (
                 <linearGradient
@@ -64,13 +65,7 @@ const CommitsGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
               dataKey="name"
               // label={{ value: "date", position: "insideBottomRight", offset: 0 }}
             />
-            <YAxis
-              label={{
-                value: "number of commits",
-                angle: -90,
-                position: "insideLeft",
-              }}
-            />
+            <YAxis />
             <Tooltip />
             <Legend verticalAlign="bottom" />
             {showUsers.map((user, userIdx) => {
