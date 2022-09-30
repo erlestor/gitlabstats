@@ -123,35 +123,6 @@ export const getCommits = async (
     })
 }
 
-export const getIssuesAutheredBy = async (
-  projectId: number,
-  userId: number,
-  afterDate?: string
-): Promise<Issue[]> => {
-  let url = baselineUrl + `${projectId}/issues?author_id=${userId}`
-
-  if (afterDate) {
-    url = url + `&created_after=${afterDate}`
-  }
-
-  return await axios
-    .get(url, {
-      headers: {
-        Authorization: `Bearer ${getRepoInformation().token}`,
-      },
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        return (response.data as Issue[]).map((e) => {
-          e.author = stripObject(e.author, ["name", "username"])
-          const data = stripObject<Issue>(e, ["author", "created_at"])
-          return data
-        })
-      }
-      throw Error("failed to fetch")
-    })
-}
-
 const dataToGraphIssues = (data: any) => {
   let users = data.map((issue: Issue) => issue.author.name)
   users = new Set(users)
@@ -218,5 +189,31 @@ export const getIssues = async (
         return graphData
       }
       throw Error("failed to fetch")
+    })
+}
+
+export const checkIfValidId = async (
+  projectId: number,
+  token: string
+): Promise<boolean> => {
+  let url = baselineUrl + `${projectId}`
+
+  return await axios
+    .get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        const data = response.data
+        if (data) return true
+        return false
+      }
+      throw Error("failed to fetch")
+    })
+    .catch((err) => {
+      console.warn(err)
+      return false
     })
 }
