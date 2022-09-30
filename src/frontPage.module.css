@@ -43,3 +43,7 @@
     transition: 0.1s;
     outline: 1.5px solid #403866;
 }
+
+.formDiv button {
+    cursor: pointer;
+}
