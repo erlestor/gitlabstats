@@ -24,17 +24,6 @@ export default function Graphs() {
 
   return (
     <>
-      <p style={{ maxWidth: "600px" }}>
-        Timeframe: {filterOptions.selectedTimeFrame} | selected persons:{" "}
-        {Object.keys(filterOptions.persons)
-          .reduce((acc: string[], cur) => {
-            if (filterOptions.persons[cur]) {
-              acc.push(cur)
-            }
-            return acc
-          }, [])
-          .join(", ")}
-      </p>
       <CommitsGraph showUsers={getShowUsers()} timeFrame={getTimeFrame()} />
       <IssuesGraph showUsers={getShowUsers()} timeFrame={getTimeFrame()} />
     </>
