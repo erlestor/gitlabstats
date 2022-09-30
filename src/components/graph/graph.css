@@ -5,3 +5,9 @@
   align-items: center;
   margin: 50px;
 }
+
+@media (max-width: 720px) {
+  .chart-container {
+    margin: 0;
+  }
+}
