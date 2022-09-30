@@ -18,7 +18,7 @@ const getDateSpan = (timeFrame: string): Date[] => {
   let monthOffset = 0
   let yearOffset = 0
 
-  if (timeFrame === "week") dayOffset = 7
+  if (timeFrame === "week") dayOffset = 6
   if (timeFrame === "month") monthOffset = 1
   if (timeFrame === "year") yearOffset = 1
 
@@ -41,14 +41,12 @@ const getDatesInRange = (timeFrame: string, startDate: Date, endDate: Date) => {
     else date.setDate(date.getDate() + 1)
   }
 
-  dates.shift()
   return dates
 }
 
 const getFormattedDate = (timeFrame: string, date: Date) => {
   const day = date.getDate().toString()
   const month = date.getMonth() + 1
-  const year = date.getFullYear().toString()
   const months = [
     "Jan",
     "Feb",
