@@ -48,7 +48,6 @@ const getDatesInRange = (timeFrame: string, startDate: Date, endDate: Date) => {
 const getFormattedDate = (timeFrame: string, date: Date) => {
   const day = date.getDate().toString()
   const month = date.getMonth() + 1
-  const year = date.getFullYear().toString()
   const months = [
     "Jan",
     "Feb",
