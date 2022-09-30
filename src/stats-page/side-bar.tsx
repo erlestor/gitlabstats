@@ -1,40 +1,55 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react";
-import { FilterOptionsContext } from ".";
-import { getRepoInformation } from "../getRepoInformation";
-import { getAllMembers, Member } from "../services/gitlabService";
-import styles from "./side-bar.module.css";
+import { ChangeEvent, useContext, useEffect, useState } from "react"
+import { FilterOptionsContext } from "."
+import { getRepoInformation } from "../getRepoInformation"
+import { getAllMembers, Member } from "../services/gitlabService"
+import styles from "./side-bar.module.css"
+import { FilterOptions } from "./IFilterOptions"
 
 export function SideBar() {
-  const [members, setMembers] = useState<Member[] | null>(null);
+  const [members, setMembers] = useState<Member[] | null>(null)
   useEffect(() => {
-    getAllMembers(getRepoInformation().projectId).then((members) => setMembers(members));
-  }, []);
+    getAllMembers(getRepoInformation().projectId).then((members) =>
+      setMembers(members)
+    )
+  }, [])
 
   const { filterOptions, setFilterOptions, timeFrames } =
-    useContext(FilterOptionsContext)!;
+    useContext(FilterOptionsContext)!
+
+  const storeFilterOptionsInSession = (filterOptions: FilterOptions) => {
+    window.sessionStorage.setItem(
+      "filterOptions",
+      JSON.stringify(filterOptions)
+    )
+  }
+
+  useEffect(() => {
+    storeFilterOptionsInSession(filterOptions)
+  }, [filterOptions])
 
   function selectPersonChange(evt: ChangeEvent<HTMLInputElement>) {
-    filterOptions.persons[evt.target.value] = evt.target.checked;
+    filterOptions.persons[evt.target.value] = evt.target.checked
     setFilterOptions({
       ...filterOptions,
       persons: {
         ...filterOptions.persons,
         [evt.target.value]: evt.target.checked,
       },
-    });
+    })
   }
 
   function setSelectedTimeFrame(timeframe: string) {
     setFilterOptions({
       ...filterOptions,
       selectedTimeFrame: timeframe,
-    });
+    })
   }
 
   return (
     <div className={styles.sideBar}>
-      {members == null ? <p>Loading ...</p>
-      : (
+      {members == null ? (
+        <p>Loading ...</p>
+      ) : (
         <>
           <h3>Time frame</h3>
           {timeFrames.map((timeFrame) => (
@@ -63,5 +78,5 @@ export function SideBar() {
         </>
       )}
     </div>
-  );
+  )
 }
