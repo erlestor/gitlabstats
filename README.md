@@ -2,7 +2,7 @@
 
 ## Komponentstruktur
 
-Bruker hovedsaklig funksjonelle komponenter. Disse komponentene har ikke som hensikt å lagre informasjon i en state, men heller tar inn data og viser det til brukeren. 
+Bruker hovedsaklig funksjonelle komponenter. Disse komponentene har ikke som hensikt å lagre informasjon i en state, men heller tar inn data og vise det til brukeren.
 
 Vi har imidlertid valgt å gjøre loginForm som en class. Dette er på bakgrunn av at en class er en "statefull-component". I loginform må vi lagre informasjon om hva brukeren har skrevet i input-feltene og sende denne informasjonen videre. Bruken av class er derfor hensiktsmessig. 
 
@@ -12,58 +12,26 @@ Vi har imidlertid valgt å gjøre loginForm som en class. Dette er på bakgrunn 
 
 ## HTML Web Storage
 
-I prosjektet brukes localstorage for å lage prosjekt-ID og token. Dette gir oss muligheten til å lagre prosjekt informasjonen. ...
+I prosjektet brukes localstorage for å lage prosjekt-ID og token. Dette gir oss muligheten til å lagre prosjekt informasjonen. Hver gang brukeren logger inn lagres prosjekt-ID og token i localStorage. Videre kan vi da hente ut innlogget bruker ved å kalle localStorage.getItem() og logge inn denne brukeren automatisk. På denne måten slipper innlogget bruker å logge seg inn hver gang en vil aksessere siden. 
 
-Sessionstorage ....
+Sessionstorage er tatt i bruk for å lagre filtervalg. Hver gang brukeren oppdaterer fitlervalgene vil informasjonen lagres i session storage. Deretter benyttes sessionStorage.getItem() for å hente ut tidligere filtervalg, dersom brukeren oppdaterer siden. 
 
 ## Responsiv Web Design
 
+Et av kravene i oppgaven var at nettsiden skal være tilpasset mobil, pad og pc. For å oppfølge dette kravet har vi tatt i bruk media queries og viewport for å tilpasse designet de ulike skjermstørrelsene. 
+
+For pc og pad har vi en header sammensatt av en overskrift og logg ut knapp, en sidebar bestående av ulike filtervalg og hovedsiden som brukes for å vise grafene. Sidebaren har en minimums bredde noe som gjør at kun størrelsen på hovedsiden endrer seg når vinduet blir større/mindre. 
+
+For å at designet skal fungere på mobil har vi benyttet media queries for å endre den overordnede strukturen på nettsiden når vinduet blir lite. Da vil sidebaren bli byttet ut med en filter knapp liggede mellom headeren og hovedsiden. Dersom en trykker på denne knappen vil filtervalgene fremvises til bruker og ta opp hele skjermen (header vises fortsatt).
+
+Disse løsningene gjør at designet blir interaktivt og responsivt.
+
+## Testing
 
 
 
-# Getting Started with Create React App
+## Bruk av Git
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Vi har valgt å bruke Git i henhold til anbefalingen fra fagstabben. Vi definerer et issue som beskriver en oppgave vi ønsker å løse. Videre lager vi en branch en eller flere branches med hensikt å løse problemet issuen fremsetter. På denne måten kan flere medlemmer av gruppen jobbe med samme problem samtidig. 
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Videre har vi et format på hvordan gruppen utfører en merge request. Før koden merges inn i main skal et annet gruppemedlem gjennomgå koden og kommentere dersom det forekommer feil. Dette gjør at feilaktig kode i større grad fikses før den blir merget inn i main. Da slipper en at det oppstår problemer senere som ofte er vanskelig å lokalisere og løse. 
