@@ -41,6 +41,7 @@ const IssuesGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
   return (
     <div className="chart-container">
       <h1>Issues</h1>
+      <h5>Number of issues</h5>
       {showUsers.length > 0 ? (
         <ResponsiveContainer width="100%" height={450}>
           <AreaChart data={graphData} margin={{ left: -35 }}>
