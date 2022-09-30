@@ -12,6 +12,7 @@ import "./graph.css"
 import { FC, useEffect, useState } from "react"
 import { getIssues } from "../../services/gitlabService"
 import { getIssueGraphData } from "../../services/issuesToGraph"
+import { getRepoInformation } from "../../getRepoInformation"
 
 interface GraphProps {
   showUsers: string[]
@@ -24,10 +25,8 @@ const IssuesGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
   const [graphData, setGraphData]: any = useState([])
 
   useEffect(() => {
-    const projectIdStr = window.localStorage.getItem("projectId")
-    if (!projectIdStr) return
-
-    const projectId = Number(projectIdStr)
+    const projectId = getRepoInformation().projectId
+    if (!projectId) return
 
     getIssues(projectId).then((issues: any) => {
       setIssues(issues)
