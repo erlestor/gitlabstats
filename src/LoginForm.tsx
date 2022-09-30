@@ -2,17 +2,27 @@ import React from "react";
 import styles from "./frontPage.module.css";
 import { RepoInformation } from "./getRepoInformation";
 
+/**
+ * Define LoginFormProps
+ */
 export type LoginFormProps = {
   callback: (repoInformation: RepoInformation) => void;
 };
 
+/**
+ * Exports the login form
+ */
 export default class LoginForm extends React.Component<
+
   LoginFormProps,
   {
     token: string;
     projectId: number | undefined;
   }
 > {
+  /**
+   * Costructor which changes the classes state based on LoginFormProps
+   */
   constructor(props: LoginFormProps) {
     super(props);
 
@@ -25,10 +35,20 @@ export default class LoginForm extends React.Component<
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  /**
+ * Function which runs every time the user modifies values in the input fields
+ * 
+ * Uses event to access the targeted input field and get its new value
+ */
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ ...this.state, [event.target.name]: event.target.value });
   }
 
+  /**
+ * Function which runs when the user click the login button
+ * 
+ * Sends the values in the state up the hierarchy with callback-function
+ */
   handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     this.props.callback(this.state as RepoInformation);

@@ -1,3 +1,26 @@
+# Dokumentasjon
+
+## Komponentstruktur
+
+Bruker hovedsaklig funksjonelle komponenter. Disse komponentene har ikke som hensikt å lagre informasjon i en state, men heller tar inn data og viser det til brukeren. 
+
+Vi har imidlertid valgt å gjøre loginForm som en class. Dette er på bakgrunn av at en class er en "statefull-component". I loginform må vi lagre informasjon om hva brukeren har skrevet i input-feltene og sende denne informasjonen videre. Bruken av class er derfor hensiktsmessig. 
+
+## Context API'et
+
+## AJAX
+
+## HTML Web Storage
+
+I prosjektet brukes localstorage for å lage prosjekt-ID og token. Dette gir oss muligheten til å lagre prosjekt informasjonen. ...
+
+Sessionstorage ....
+
+## Responsiv Web Design
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

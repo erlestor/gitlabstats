@@ -6,9 +6,14 @@ import Header from './header/header'
 import { hasRepoInformation, saveRepoInformation, RepoInformation } from './getRepoInformation';
 
 function App() {
-
+  /**
+   * Set showFrontPage state based on if the application has repository information
+   */
   const [showFrontPage, setShowFrontPage] = useState(!hasRepoInformation());
 
+  /**
+   * If the application do have repository information it displays stats page
+   */
   if (!showFrontPage) {
     return <>
       <Header setShowFrontPage={setShowFrontPage} />
@@ -16,6 +21,9 @@ function App() {
     </>
   }
 
+  /**
+   * If the application do not have repository information it displays frontpage
+   */
   return (
     <>
       <FrontPage callback={(repoInformation: RepoInformation) => {

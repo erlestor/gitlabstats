@@ -1,9 +1,18 @@
 import styles from "./header.module.css";
 
+/**
+ * Exports header 
+ * 
+ * Takes setShowFrontPage as props which decides whether the user is displayed frontpage or analytics page
+ */
 export default function Header(props: {
     setShowFrontPage: (show: boolean) => void
 }) {
 
+    /**
+     * Handles logout 
+     * Clear local storage and shows frontpage
+     */
     function handleLogout() {
         localStorage.clear();
         props.setShowFrontPage(true);
