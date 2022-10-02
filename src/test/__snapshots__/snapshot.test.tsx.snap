@@ -7,7 +7,6 @@ Object {
     <div>
       <div
         class="loginDiv"
-        style="background-image: url(background.jpg);"
       >
         <div
           class="formDiv"
@@ -44,7 +43,6 @@ Object {
   "container": <div>
     <div
       class="loginDiv"
-      style="background-image: url(background.jpg);"
     >
       <div
         class="formDiv"
