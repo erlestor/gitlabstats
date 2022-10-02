@@ -1,49 +1,54 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
+@import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
 
 * {
-    font-family: Raleway, sans-serif;
+  font-family: Raleway, sans-serif;
 }
 
 .loginDiv {
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 100vh;  
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .formDiv {
-    width: 350px;
-    height: 300px;
-    background-color: white;
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    box-sizing: border-box;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  width: 350px;
+  height: 300px;
+  background-color: white;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 
 .formDiv h3 {
-    margin-top: 35px;
-    color: #403866;
-    font-size: 18px;
-    margin-bottom: 35px;
+  margin-top: 35px;
+  color: #403866;
+  font-size: 18px;
+  margin-bottom: 35px;
 }
 
 .formDiv input {
-    width: 220px;
-    padding: 13px 25px;
-    margin-bottom: 15px;
-    background-color: #E6E6E6;
+  width: 220px;
+  padding: 13px 25px;
+  margin-bottom: 15px;
+  background-color: #e6e6e6;
 }
 
 .formDiv input:focus {
-    transition: 0.1s;
-    outline: 1.5px solid #403866;
+  transition: 0.1s;
+  outline: 1.5px solid #403866;
 }
 
 .formDiv button {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
 }

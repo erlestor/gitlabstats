@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
-import './App.css';
-import { FrontPage } from './frontPage';
-import StatsPage from './stats-page';
-import Header from './header/header'
-import { hasRepoInformation, saveRepoInformation, RepoInformation } from './getRepoInformation';
+import React, { useState } from "react"
+import { FrontPage } from "./frontPage"
+import StatsPage from "./stats-page"
+import Header from "./header/header"
+import {
+  hasRepoInformation,
+  saveRepoInformation,
+  RepoInformation,
+} from "./getRepoInformation"
 
 function App() {
-  /**
-   * Set showFrontPage state based on if the application has repository information
-   */
-  const [showFrontPage, setShowFrontPage] = useState(!hasRepoInformation());
+  const [showFrontPage, setShowFrontPage] = useState(!hasRepoInformation())
 
   /**
    * If the application do have repository information it displays stats page
    */
   if (!showFrontPage) {
-    return <>
-      <Header setShowFrontPage={setShowFrontPage} />
-      <StatsPage />
-    </>
+    return (
+      <>
+        <Header setShowFrontPage={setShowFrontPage} />
+        <StatsPage />
+      </>
+    )
   }
 
   /**
@@ -26,12 +28,14 @@ function App() {
    */
   return (
     <>
-      <FrontPage callback={(repoInformation: RepoInformation) => {
-        saveRepoInformation(repoInformation);
-        setShowFrontPage(false);
-      }} />
+      <FrontPage
+        callback={(repoInformation: RepoInformation) => {
+          saveRepoInformation(repoInformation)
+          setShowFrontPage(false)
+        }}
+      />
     </>
-  );
+  )
 }
 
-export default App;
+export default App
