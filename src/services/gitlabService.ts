@@ -2,13 +2,18 @@ import axios from "axios";
 import { stripObject } from "./stripObject";
 import { getRepoInformation, RepoInformation } from "../getRepoInformation";
 
+//This file gets data from the gitlab API.
+
+//The baseURL for all of the API calls.
 const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/";
 
+//The interface for a commit type. 
 export interface Commit {
   created_at: string;
   author_name: string;
 }
 
+//The interface for a issue type.
 export interface Issue {
   created_at: string;
   author: {
@@ -17,13 +22,18 @@ export interface Issue {
   };
 }
 
+//The interface for a member type
 export interface Member {
   id: number;
   username: string;
   name: string;
 }
 
-//First get all members function
+/*Get all the members in the repository
+* Parameters: project id as a number
+* Returns a Member
+* Throws error if the response is not 200
+*/
 export const getAllMembers = async (id: number): Promise<Member[]> => {
   return axios
     .get(baselineUrl + `${id}/members/all`, {
@@ -42,6 +52,10 @@ export const getAllMembers = async (id: number): Promise<Member[]> => {
     });
 };
 
+/* Formats the data from the commit API call to be compatible with the graph
+* Parameters: the data to format
+* Returns an array with the data.
+*/
 const dataToGraphCommits = (data: any) => {
   let users = data.map((commit: Commit) => commit.author_name);
   users = new Set(users);
@@ -83,8 +97,14 @@ const dataToGraphCommits = (data: any) => {
   return graphCommits;
 };
 
-//Get commits sorted on given dates
-//Have to pass in undefined for startdate to get correct enddate
+/*Get the commits. Can be filtered by dates.
+* Have to pass in undefined for startdate to get correct end date
+* Parameters: the project ID as a number
+* The start date and end dates as string. 
+* These are optional.
+* Return an array of commits formated by dataToGraphCommits
+* Throws an error if the status in not 200
+*/
 export const getCommits = async (
   projectId: number,
   startDate?: string,
@@ -125,6 +145,10 @@ export const getCommits = async (
     });
 };
 
+/* Formats the data from the issues API call to be compatible with the graph
+* Parameters: the data to format
+* Returns an array with the data.
+*/
 const dataToGraphIssues = (data: any) => {
   let users = data.map((issue: Issue) => issue.author.name);
   users = new Set(users);
@@ -164,6 +188,13 @@ const dataToGraphIssues = (data: any) => {
   return graphIssues;
 };
 
+
+/*Get the issues. Can filter by a start date
+* Parameters: the project ID as a number
+* Optional start date as a string. 
+* Return an array of issues returned by dataToGraphIssues
+* Throws an error if the status in not 200
+*/
 export const getIssues = async (
   projectId: number,
   afterDate?: string
@@ -194,6 +225,11 @@ export const getIssues = async (
     });
 };
 
+/* Used to validate if the repo information inputed by the user is valid.
+* Parameters: the repo information
+* return: True if the status is 200.
+* Throws an error if it is not 200 or if the input is empty.
+*/
 export const validateRepoInformation = async (
   repoInformation: RepoInformation
 ): Promise<boolean> => {
