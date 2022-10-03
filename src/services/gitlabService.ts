@@ -1,6 +1,6 @@
 import axios from "axios";
+import { getRepoInformation, RepoInformation } from "../authentication/getRepoInformation";
 import { stripObject } from "./stripObject";
-import { getRepoInformation, RepoInformation } from "../getRepoInformation";
 
 const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/";
 

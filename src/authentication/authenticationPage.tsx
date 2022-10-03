@@ -1,9 +1,9 @@
 import styles from "./frontPage.module.css";
 import backgroundBig from "./images/backgroundBig.jpg";
 import backgroundSmall from "./images/backgroundSmall.jpg";
-import LoginForm, { LoginFormProps } from "./LoginForm";
+import AuthenticationForm, { AuthenticationFormProps } from "./authenticationForm";
 
-export function FrontPage(props: LoginFormProps) {
+export function AuthenticationPage(props: AuthenticationFormProps) {
   return (
     <div
       style={{
@@ -13,7 +13,7 @@ export function FrontPage(props: LoginFormProps) {
       }}
       className={styles.loginDiv}
     >
-      <LoginForm callback={props.callback} />
+      <AuthenticationForm callback={props.callback} />
     </div>
   );
 }

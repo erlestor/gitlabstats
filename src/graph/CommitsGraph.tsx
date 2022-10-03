@@ -10,40 +10,40 @@ import {
 } from "recharts"
 import "./graph.css"
 import { FC, useEffect, useState } from "react"
-import { getIssues } from "../../services/gitlabService"
-import { getIssueGraphData } from "../../services/issuesToGraph"
-import { getRepoInformation } from "../../getRepoInformation"
+import { getGraphData } from "./commitsToGraph"
+import { getCommits } from "../services/gitlabService"
+import { getRepoInformation } from "../authentication/getRepoInformation"
 
 interface GraphProps {
   showUsers: string[]
   timeFrame: string
 }
 
-const IssuesGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
+const CommitsGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
   const colors = ["#8884d8", "green", "red", "purple", "blue"]
-  const [issues, setIssues] = useState([])
+  const [commits, setCommits] = useState([])
   const [graphData, setGraphData]: any = useState([])
 
   useEffect(() => {
     const projectId = getRepoInformation().projectId
     if (!projectId) return
 
-    getIssues(projectId).then((issues: any) => {
-      setIssues(issues)
+    getCommits(projectId).then((commits: any) => {
+      setCommits(commits)
     })
   }, [])
 
   useEffect(() => {
-    const graphData = getIssueGraphData(timeFrame, showUsers, issues)
+    const graphData = getGraphData(timeFrame, showUsers, commits)
     setGraphData(graphData)
-  }, [issues, showUsers, timeFrame])
+  }, [commits, showUsers, timeFrame])
 
   return (
     <div className="chart-container">
-      <h1>Issues</h1>
+      <h1>Commits</h1>
       {showUsers.length > 0 ? (
         <>
-          <h5>Number of issues</h5>
+          <h5>number of commits</h5>
           <ResponsiveContainer width="100%" height={450}>
             <AreaChart data={graphData} margin={{ left: -35 }}>
               <defs>
@@ -93,4 +93,4 @@ const IssuesGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
   )
 }
 
-export default IssuesGraph
+export default CommitsGraph

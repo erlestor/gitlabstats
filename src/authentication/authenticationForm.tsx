@@ -1,21 +1,21 @@
 import React from "react"
-import styles from "./frontPage.module.css"
+import styles from "./authenticationPage.module.css"
 import { RepoInformation } from "./getRepoInformation"
-import { validateRepoInformation } from "./services/gitlabService"
+import { validateRepoInformation } from "../services/gitlabService"
 
-export type LoginFormProps = {
+export type AuthenticationFormProps = {
   callback: (repoInformation: RepoInformation) => void
 }
 
-export default class LoginForm extends React.Component<
-  LoginFormProps,
+export default class AuthenticationForm extends React.Component<
+  AuthenticationFormProps,
   {
     token: string
     projectId: number | string
     error: string
   }
 > {
-  constructor(props: LoginFormProps) {
+  constructor(props: AuthenticationFormProps) {
     super(props)
 
     this.state = {
@@ -53,7 +53,7 @@ export default class LoginForm extends React.Component<
     return (
       <div className={styles.formDiv}>
         <form onSubmit={this.handleSubmit}>
-          <h3>LOGG INN</h3>
+          <h3>Insert Repository Information</h3>
           <input
             placeholder="Token"
             type="text"
@@ -71,7 +71,7 @@ export default class LoginForm extends React.Component<
             onChange={this.handleChange}
             required
           />
-          <button data-testid="loginBtn">Logg inn</button>
+          <button data-testid="loginBtn">OK</button>
           {!!this.state.error && (
             <p className={styles.error}>{this.state.error}</p>
           )}

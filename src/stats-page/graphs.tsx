@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { FilterOptionsContext } from "."
-import CommitsGraph from "../components/graph/CommitsGraph"
-import IssuesGraph from "../components/graph/IssuesGraph"
+import CommitsGraph from "../graph/CommitsGraph"
+import IssuesGraph from "../graph/IssuesGraph"
 
 export default function Graphs() {
   const { filterOptions } = useContext(FilterOptionsContext)!

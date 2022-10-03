@@ -1,9 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
-
-* {
-  font-family: Raleway, sans-serif;
-}
-
 .loginDiv {
   background-size: cover;
   background-repeat: no-repeat;
@@ -28,7 +22,7 @@
 
 .formDiv h3 {
   margin-top: 35px;
-  color: #403866;
+  color: var(--second-accent-color);
   font-size: 18px;
   margin-bottom: 35px;
 }
@@ -42,7 +36,7 @@
 
 .formDiv input:focus {
   transition: 0.1s;
-  outline: 1.5px solid #403866;
+  outline: 1.5px solid var(--second-accent-color);
 }
 
 .formDiv button {
