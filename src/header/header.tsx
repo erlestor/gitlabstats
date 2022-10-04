@@ -15,6 +15,7 @@ export default function Header(props: {
      */
     function handleLogout() {
         localStorage.clear();
+        sessionStorage.clear()
         props.setShowFrontPage(true);
     }
 
