@@ -30,11 +30,11 @@ const inDateSpan = (timeFrame: string, issue: Issue) => {
 // eg. [{name: "2022-04-10", bruker1: 17, bruker2: 8}]
 export const getIssueGraphData = (
   timeFrame: string,
-  showUsers: string[],
+  selectedUsers: Set<string>,
   issues: any
 ): Datapoint[] => {
   // data is now a list with all the dates/months and the user values for each month set to 0
-  const data = getDatesAsData(timeFrame, showUsers)
+  const data = getDatesAsData(timeFrame, selectedUsers)
 
   let joinedIssues: Issue[] = []
   issues.forEach((issueList: any) => {
@@ -43,7 +43,7 @@ export const getIssueGraphData = (
 
   const filteredIssues = joinedIssues.filter(
     (issue) =>
-      inDateSpan(timeFrame, issue) && showUsers.includes(issue.authorName)
+      inDateSpan(timeFrame, issue) && selectedUsers.has(issue.authorName)
   )
 
   filteredIssues.forEach((issue) => {

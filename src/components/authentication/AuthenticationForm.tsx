@@ -1,52 +1,51 @@
-import React from "react"
-import styles from "./authenticationPage.module.css"
-import { RepoInformation } from "../../services/getRepoInformation"
-import { validateRepoInformation } from "../../services/gitlabService"
+import React from "react";
+import { RepoInformation } from "../../services/getRepoInformation";
+import { validateRepoInformation } from "../../services/gitlabService";
+import styles from "./authenticationPage.module.css";
+
 
 export type AuthenticationFormProps = {
-  callback: (repoInformation: RepoInformation) => void
-}
+  callback: (repoInformation: RepoInformation) => void;
+};
 
 export default class AuthenticationForm extends React.Component<
   AuthenticationFormProps,
   {
-    token: string
-    projectId: number | string
-    error: string
+    token: string;
+    projectId: number | string;
+    error: string;
   }
 > {
   constructor(props: AuthenticationFormProps) {
-    super(props)
+    super(props);
 
     this.state = {
       token: "",
       projectId: "",
       error: "",
-    }
+    };
 
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ ...this.state, [event.target.name]: event.target.value })
+    this.setState({ ...this.state, [event.target.name]: event.target.value });
   }
 
   async handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const token = this.state.token
-    const projectId = Number(this.state.projectId)
+    event.preventDefault();
+    const token = this.state.token;
+    const projectId = Number(this.state.projectId);
 
     await validateRepoInformation({ projectId, token })
-      .then((valid) => {
-        if (valid) {
-          this.setState({ error: "" })
-          this.props.callback(this.state as RepoInformation)
-        }
+      .then(() => { 
+        this.setState({ error: "" });
+        this.props.callback(this.state as RepoInformation);
       })
-      .catch((err) => {
-        this.setState({ error: "Wrong token or projectId" })
-      })
+      .catch((_) => {
+        this.setState({ error: "Could not verify repository information" });
+      });
   }
 
   render() {
@@ -77,6 +76,6 @@ export default class AuthenticationForm extends React.Component<
           )}
         </form>
       </div>
-    )
+    );
   }
 }

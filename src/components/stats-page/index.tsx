@@ -1,27 +1,26 @@
-import { createContext, useState } from "react"
-import { getFilterInformation } from "../../services/getRepoInformation"
-import Graphs from "./Graphs"
-import { FilterOptions } from "./IFilterOptions"
-import styles from "./index.module.css"
-import { SideBar } from "./SideBar"
+import { createContext, useState } from "react";
+import { getFilterInformation } from "../../services/getRepoInformation";
+import Graphs from "./Graphs";
+import { FilterOptions } from "./IFilterOptions";
+import { SideBar } from "./SideBar";
 
 export const FilterOptionsContext = createContext<{
-  filterOptions: FilterOptions
-  setFilterOptions: (filterOptions: FilterOptions) => void
-  timeFrames: string[]
-} | null>(null)
+  filterOptions: FilterOptions;
+  setFilterOptions: (filterOptions: FilterOptions) => void;
+  timeFrames: string[];
+} | null>(null);
 
 export default function StatsPage() {
-  const timeFrames = ["Last week", "Last month", "Last year"]
+  const timeFrames = ["Last week", "Last month", "Last year"];
 
   const [filterOptions, setFilterOptions] = useState<FilterOptions>(() => {
-    const filterInformation = getFilterInformation()
-    if (filterInformation) return filterInformation
-    return { persons: {}, selectedTimeFrame: timeFrames[0] }
-  })
+    const filterInformation = getFilterInformation();
+    if (filterInformation) return filterInformation;
+    return { selectedUsers: new Set(), selectedTimeFrame: timeFrames[0] };
+  });
 
   const [showFilterOptionsFullScreen, setShowFilterOptionsFullScreen] =
-    useState(false)
+    useState(false);
 
   return (
     <FilterOptionsContext.Provider
@@ -41,7 +40,7 @@ export default function StatsPage() {
           <button
             className={styles.setFilterBtn}
             onClick={() => {
-              setShowFilterOptionsFullScreen(false)
+              setShowFilterOptionsFullScreen(false);
             }}
           >
             Set filter
@@ -66,5 +65,5 @@ export default function StatsPage() {
         )}
       </div>
     </FilterOptionsContext.Provider>
-  )
+  );
 }

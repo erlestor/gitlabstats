@@ -16,7 +16,7 @@ interface Datapoint {
 // eg.  [{name: "2022-04-10", bruker1: 0, bruker2: 0}]
 const getDatesAsData = (
   timeFrame: string,
-  showUsers: string[]
+  selectedUsers: Set<string>
 ): Datapoint[] => {
   const dateSpan = getDateSpan(timeFrame)
   const datesInRange = getDatesInRange(timeFrame, dateSpan[0], dateSpan[1])
@@ -25,7 +25,7 @@ const getDatesAsData = (
   datesInRange.forEach((date) => {
     const formattedDate = getFormattedDate(timeFrame, date)
     let datapoint = { name: formattedDate }
-    showUsers.forEach((user) => {
+    selectedUsers.forEach((user) => {
       datapoint = {
         ...datapoint,
         [user]: 0,
@@ -55,11 +55,11 @@ const inDateSpan = (timeFrame: string, commit: Commit) => {
 // eg. [{name: "2022-04-10", bruker1: 17, bruker2: 8}]
 export const getGraphData = (
   timeFrame: string,
-  showUsers: string[],
+  selectedUsers: Set<string>,
   commits: Commit[][]
 ): Datapoint[] => {
   // data is now a list with all the dates/months and the user values for each month set to 0
-  const data = getDatesAsData(timeFrame, showUsers)
+  const data = getDatesAsData(timeFrame, selectedUsers)
 
   let joinedCommits: Commit[] = []
   commits.forEach((commitList: any) => {
@@ -68,7 +68,8 @@ export const getGraphData = (
 
   const filteredCommits = joinedCommits.filter(
     (commit) =>
-      inDateSpan(timeFrame, commit) && showUsers.includes(commit.authorName)
+      inDateSpan(timeFrame, commit) &&
+      (selectedUsers.has(commit.authorName) || selectedUsers.size === 0)
   )
 
   filteredCommits.forEach((commit) => {

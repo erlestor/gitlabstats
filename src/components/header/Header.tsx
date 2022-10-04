@@ -1,12 +1,12 @@
 import styles from "./header.module.css";
 
 export default function Header(props: {
-    setShowFrontPage: (show: boolean) => void
+    setShowAuthenticationPage: (show: boolean) => void
 }) {
 
     function handleLogout() {
         localStorage.clear();
-        props.setShowFrontPage(true);
+        props.setShowAuthenticationPage(true);
     }
 
     return (

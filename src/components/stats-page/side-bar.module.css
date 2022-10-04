@@ -1,9 +1,9 @@
 .sideBar {
     background: rgb(216, 216, 216);
-    height: calc(100vh - var(--header-size));
+    height: calc(100vh - var(--header-size) - 32px);
     overflow-y: scroll;
     min-width: calc(200px - 32px);
-    padding: 0 16px;
+    padding: 16px;
 }
 
 .sideBar input {

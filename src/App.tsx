@@ -9,12 +9,12 @@ import Header from "./components/header/Header"
 import StatsPage from "./components/stats-page"
 
 function App() {
-  const [showFrontPage, setShowFrontPage] = useState(!hasRepoInformation())
+  const [showAuthenticationPage, setShowAuthenticationPage] = useState(!hasRepoInformation());
 
-  if (!showFrontPage) {
+  if (!showAuthenticationPage) {
     return (
       <>
-        <Header setShowFrontPage={setShowFrontPage} />
+        <Header setShowAuthenticationPage={setShowAuthenticationPage} />
         <StatsPage />
       </>
     )
@@ -24,10 +24,10 @@ function App() {
     <>
       <AuthenticationPage
         callback={(repoInformation: RepoInformation) => {
-          saveRepoInformation(repoInformation)
-          setShowFrontPage(false)
+          saveRepoInformation(repoInformation);
+          setShowAuthenticationPage(false);
         }}
-      />
+      /> 
     </>
   )
 }

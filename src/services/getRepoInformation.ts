@@ -50,11 +50,17 @@ export const saveRepoInformation = (r: RepoInformation) => {
 }
 
 export const saveFilterInformation = (filterOptions: FilterOptions) => {
-  window.sessionStorage.setItem(filterOptionsKey, JSON.stringify(filterOptions))
+  // convert set to array
+  const f = {...filterOptions, selectedUsers: Array.from(filterOptions.selectedUsers)}
+  window.sessionStorage.setItem(filterOptionsKey, JSON.stringify(f))
 }
 
-export const getFilterInformation = () => {
+export const getFilterInformation = (): FilterOptions | null => {
   const savedFilterOptionJson = window.sessionStorage.getItem(filterOptionsKey)
-  if (savedFilterOptionJson) return JSON.parse(savedFilterOptionJson)
-  return null
+  if (!savedFilterOptionJson) {
+    return null;
+  }
+  const savedFilterOption = JSON.parse(savedFilterOptionJson) as FilterOptions;
+  savedFilterOption.selectedUsers = new Set(savedFilterOption.selectedUsers ?? []);
+  return savedFilterOption;
 }

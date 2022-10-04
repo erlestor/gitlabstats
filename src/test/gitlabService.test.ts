@@ -1,4 +1,4 @@
-import { saveRepoInformation } from "../services/getRepoInformation"
+import { saveRepoInformation } from "../authentication/getRepoInformation"
 import { getAllMembers, getCommits, getIssues } from "../services/gitlabService"
 import { LocalStorageMock } from "./LocalstorageMock"
 
