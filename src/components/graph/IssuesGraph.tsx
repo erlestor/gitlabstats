@@ -19,12 +19,16 @@ interface GraphProps {
   timeFrame: string
 }
 
+// Graph Component for displaying graph of issues
 const IssuesGraph: FC<GraphProps> = ({ selectedUsers, timeFrame }) => {
   const colors = ["#8884d8", "green", "red", "purple", "blue"]
+  // issues from api
   const [issues, setIssues] = useState([])
+  // data that the 'recharts' graph takes in as parameter
   const [graphData, setGraphData]: any = useState([])
 
   useEffect(() => {
+    // on load => get the issues from gitlab api
     const projectId = getRepoInformation().projectId
     if (!projectId) return
 
@@ -34,6 +38,7 @@ const IssuesGraph: FC<GraphProps> = ({ selectedUsers, timeFrame }) => {
   }, [])
 
   useEffect(() => {
+    // everytime filters are changed, get the correct graph data by passing commits to getGraphData
     const graphData = getIssueGraphData(timeFrame, selectedUsers, issues)
     setGraphData(graphData)
   }, [issues, selectedUsers, timeFrame])

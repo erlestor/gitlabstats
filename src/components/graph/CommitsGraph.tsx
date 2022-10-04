@@ -19,6 +19,7 @@ interface GraphProps {
   timeFrame: string
 }
 
+// Graph Component for displaying graph of commits
 const CommitsGraph: FC<GraphProps> = ({ selectedUsers, timeFrame }) => {
   const colors = [
     "#8884d8",
@@ -30,10 +31,13 @@ const CommitsGraph: FC<GraphProps> = ({ selectedUsers, timeFrame }) => {
     "lightblue",
     "lightcyan",
   ]
+  // commits from api
   const [commits, setCommits] = useState([])
+  // data that the 'recharts' graph takes in as parameter
   const [graphData, setGraphData]: any = useState([])
 
   useEffect(() => {
+    // on load => get the commits from gitlab api
     const projectId = getRepoInformation().projectId
     if (!projectId) return
 
@@ -43,6 +47,7 @@ const CommitsGraph: FC<GraphProps> = ({ selectedUsers, timeFrame }) => {
   }, [])
 
   useEffect(() => {
+    // everytime filters are changed, get the correct graph data by passing commits to getGraphData
     const graphData = getGraphData(timeFrame, selectedUsers, commits)
     setGraphData(graphData)
   }, [commits, selectedUsers, timeFrame])
@@ -71,10 +76,7 @@ const CommitsGraph: FC<GraphProps> = ({ selectedUsers, timeFrame }) => {
                 ))}
               </defs>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="name"
-                // label={{ value: "date", position: "insideBottomRight", offset: 0 }}
-              />
+              <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend verticalAlign="bottom" />
