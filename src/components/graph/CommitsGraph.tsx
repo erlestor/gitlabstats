@@ -20,7 +20,16 @@ interface GraphProps {
 }
 
 const CommitsGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
-  const colors = ["#8884d8", "green", "red", "purple", "blue"]
+  const colors = [
+    "#8884d8",
+    "green",
+    "red",
+    "purple",
+    "blue",
+    "turquoise",
+    "lightblue",
+    "lightcyan",
+  ]
   const [commits, setCommits] = useState([])
   const [graphData, setGraphData]: any = useState([])
 

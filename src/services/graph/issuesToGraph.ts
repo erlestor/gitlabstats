@@ -1,94 +1,17 @@
+import { getDatesAsData, getDateSpan, getFormattedDate } from "./dates"
+
 interface Issue {
   authorName: string
   date: string
   numberOfIssues: number
 }
 
-interface Datapoint {
+export interface Datapoint {
   name: string
   [key: string]: any
 }
 
-// returns the start and end date of a given timeFrame
-const getDateSpan = (timeFrame: string): Date[] => {
-  const endDate = new Date()
-  let startDate = new Date()
-
-  let dayOffset = 0
-  let monthOffset = 0
-  let yearOffset = 0
-
-  if (timeFrame === "week") dayOffset = 6
-  if (timeFrame === "month") monthOffset = 1
-  if (timeFrame === "year") yearOffset = 1
-
-  startDate = new Date(
-    endDate.getFullYear() - yearOffset,
-    endDate.getMonth() - monthOffset,
-    endDate.getDate() - dayOffset
-  )
-
-  return [startDate, endDate]
-}
-
-const getDatesInRange = (timeFrame: string, startDate: Date, endDate: Date) => {
-  const date = new Date(startDate)
-  const dates = []
-
-  while (date <= endDate) {
-    dates.push(new Date(date))
-    if (timeFrame === "year") date.setMonth(date.getMonth() + 1)
-    else date.setDate(date.getDate() + 1)
-  }
-
-  return dates
-}
-
-const getFormattedDate = (timeFrame: string, date: Date) => {
-  const day = date.getDate().toString()
-  const month = date.getMonth() + 1
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ]
-
-  if (timeFrame === "year") return "" + months[month - 1]
-
-  return day + "/" + month.toString()
-}
-
-const getDatesAsData = (
-  timeFrame: string,
-  showUsers: string[]
-): Datapoint[] => {
-  const dateSpan = getDateSpan(timeFrame)
-  const datesInRange = getDatesInRange(timeFrame, dateSpan[0], dateSpan[1])
-  const data: Datapoint[] = []
-
-  datesInRange.forEach((date) => {
-    const formattedDate = getFormattedDate(timeFrame, date)
-    let datapoint = { name: formattedDate }
-    showUsers.forEach((user) => {
-      datapoint = {
-        ...datapoint,
-        [user]: 0,
-      }
-    })
-    data.push(datapoint)
-  })
-  return data
-}
-
+// Checks if a commit is created inside the timeframe given. Eg. is it in the last week
 const inDateSpan = (timeFrame: string, issue: Issue) => {
   const dateSpan = getDateSpan(timeFrame)
   const startDate = dateSpan[0]
@@ -98,6 +21,13 @@ const inDateSpan = (timeFrame: string, issue: Issue) => {
   return issueDate >= startDate && issueDate <= endDate
 }
 
+// Takes in issues from api. Issues contains a list for user;
+// where each object is a certain date and how many issues that user has at that date
+// eg. [[{authorName, createdAt, numberOfIssues}]]'
+
+// Returns data that the 'recharts' graph can take in
+// data needs to be a list with a object for each date that needs to be shown
+// eg. [{name: "2022-04-10", bruker1: 17, bruker2: 8}]
 export const getIssueGraphData = (
   timeFrame: string,
   showUsers: string[],
