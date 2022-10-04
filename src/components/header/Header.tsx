@@ -6,7 +6,7 @@ import styles from "./header.module.css";
  * Takes setShowFrontPage as props which decides whether the user is displayed frontpage or analytics page
  */
 export default function Header(props: {
-    setShowFrontPage: (show: boolean) => void
+    setShowAuthenticationPage: (show: boolean) => void
 }) {
 
     /**
@@ -16,12 +16,12 @@ export default function Header(props: {
     function handleLogout() {
         localStorage.clear();
         sessionStorage.clear()
-        props.setShowFrontPage(true);
+        props.setShowAuthenticationPage(true);
     }
 
     return (
         <header className={styles.header}>
-            <h1>GitLab Stats Pro+</h1>
+            <h1>GitLab Stats Pro</h1>
                 <button onClick={handleLogout}>Logout</button>
         </header>
     );

@@ -10,21 +10,34 @@ import {
 } from "recharts"
 import "./graph.css"
 import { FC, useEffect, useState } from "react"
-import { getGraphData } from "../../services/commitsToGraph"
 import { getCommits } from "../../services/gitlabService"
-import { getRepoInformation } from "../../getRepoInformation"
+import { getRepoInformation } from "../../services/getRepoInformation"
+import { getGraphData } from "../../services/graph/commitsToGraph"
 
 interface GraphProps {
-  showUsers: string[]
+  selectedUsers: Set<string>
   timeFrame: string
 }
 
-const CommitsGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
-  const colors = ["#8884d8", "green", "red", "purple", "blue"]
+// Graph Component for displaying graph of commits
+const CommitsGraph: FC<GraphProps> = ({ selectedUsers, timeFrame }) => {
+  const colors = [
+    "#8884d8",
+    "green",
+    "red",
+    "purple",
+    "blue",
+    "turquoise",
+    "lightblue",
+    "lightcyan",
+  ]
+  // commits from api
   const [commits, setCommits] = useState([])
+  // data that the 'recharts' graph takes in as parameter
   const [graphData, setGraphData]: any = useState([])
 
   useEffect(() => {
+    // on load => get the commits from gitlab api
     const projectId = getRepoInformation().projectId
     if (!projectId) return
 
@@ -34,14 +47,15 @@ const CommitsGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
   }, [])
 
   useEffect(() => {
-    const graphData = getGraphData(timeFrame, showUsers, commits)
+    // everytime filters are changed, get the correct graph data by passing commits to getGraphData
+    const graphData = getGraphData(timeFrame, selectedUsers, commits)
     setGraphData(graphData)
-  }, [commits, showUsers, timeFrame])
+  }, [commits, selectedUsers, timeFrame])
 
   return (
     <div className="chart-container">
       <h1>Commits</h1>
-      {showUsers.length > 0 ? (
+      {selectedUsers.size > 0 ? (
         <>
           <h5>number of commits</h5>
           <ResponsiveContainer width="100%" height={450}>
@@ -62,14 +76,11 @@ const CommitsGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
                 ))}
               </defs>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="name"
-                // label={{ value: "date", position: "insideBottomRight", offset: 0 }}
-              />
+              <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend verticalAlign="bottom" />
-              {showUsers.map((user, userIdx) => {
+              {Array.from(selectedUsers).map((user, userIdx) => {
                 const color = colors[userIdx]
                 const fill = "url(#" + color + ")"
                 return (
@@ -87,7 +98,7 @@ const CommitsGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
           </ResponsiveContainer>
         </>
       ) : (
-        <h3>Select one or more users to view graph</h3>
+        <h4>Select one or more users to view graph</h4>
       )}
     </div>
   )

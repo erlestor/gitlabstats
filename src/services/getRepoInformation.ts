@@ -1,5 +1,4 @@
-import {} from "./services/gitlabService"
-import { FilterOptions } from "./stats-page/IFilterOptions"
+import { FilterOptions } from "../components/stats-page/IFilterOptions"
 
 export interface RepoInformation {
   token: string
@@ -7,13 +6,16 @@ export interface RepoInformation {
 }
 
 let repoInformation: RepoInformation | null = null
+const tokenKey = "token"
+const projectIdKey = "projectId"
+const filterOptionsKey = "filterOptions"
 
 const getLocalStorageToken = (): string | null => {
-  return localStorage.getItem("token")
+  return localStorage.getItem(tokenKey)
 }
 
 const getLocalStorageProjectId = (): number | null => {
-  const v = localStorage.getItem("projectId")
+  const v = localStorage.getItem(projectIdKey)
   if (!v) {
     return null
   }
@@ -43,17 +45,22 @@ export const getRepoInformation = (): RepoInformation => {
 
 export const saveRepoInformation = (r: RepoInformation) => {
   repoInformation = r
-  localStorage.setItem("token", r.token)
-  localStorage.setItem("projectId", r.projectId.toString())
+  localStorage.setItem(tokenKey, r.token)
+  localStorage.setItem(projectIdKey, r.projectId.toString())
 }
 
 export const saveFilterInformation = (filterOptions: FilterOptions) => {
-  window.sessionStorage.setItem("filterOptions", JSON.stringify(filterOptions))
+  // convert set to array
+  const f = {...filterOptions, selectedUsers: Array.from(filterOptions.selectedUsers)}
+  window.sessionStorage.setItem(filterOptionsKey, JSON.stringify(f))
 }
 
-export const getFilterInformation = () => {
-  const sessionStorage = window.sessionStorage.getItem("filterOptions")
-
-  if (sessionStorage) return JSON.parse(sessionStorage)
-  return null
+export const getFilterInformation = (): FilterOptions | null => {
+  const savedFilterOptionJson = window.sessionStorage.getItem(filterOptionsKey)
+  if (!savedFilterOptionJson) {
+    return null;
+  }
+  const savedFilterOption = JSON.parse(savedFilterOptionJson) as FilterOptions;
+  savedFilterOption.selectedUsers = new Set(savedFilterOption.selectedUsers ?? []);
+  return savedFilterOption;
 }

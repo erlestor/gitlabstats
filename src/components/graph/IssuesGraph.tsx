@@ -11,20 +11,24 @@ import {
 import "./graph.css"
 import { FC, useEffect, useState } from "react"
 import { getIssues } from "../../services/gitlabService"
-import { getIssueGraphData } from "../../services/issuesToGraph"
-import { getRepoInformation } from "../../getRepoInformation"
+import { getIssueGraphData } from "../../services/graph/issuesToGraph"
+import { getRepoInformation } from "../../services/getRepoInformation"
 
 interface GraphProps {
-  showUsers: string[]
+  selectedUsers: Set<string>
   timeFrame: string
 }
 
-const IssuesGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
+// Graph Component for displaying graph of issues
+const IssuesGraph: FC<GraphProps> = ({ selectedUsers, timeFrame }) => {
   const colors = ["#8884d8", "green", "red", "purple", "blue"]
+  // issues from api
   const [issues, setIssues] = useState([])
+  // data that the 'recharts' graph takes in as parameter
   const [graphData, setGraphData]: any = useState([])
 
   useEffect(() => {
+    // on load => get the issues from gitlab api
     const projectId = getRepoInformation().projectId
     if (!projectId) return
 
@@ -34,16 +38,17 @@ const IssuesGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
   }, [])
 
   useEffect(() => {
-    const graphData = getIssueGraphData(timeFrame, showUsers, issues)
+    // everytime filters are changed, get the correct graph data by passing commits to getGraphData
+    const graphData = getIssueGraphData(timeFrame, selectedUsers, issues)
     setGraphData(graphData)
-  }, [issues, showUsers, timeFrame])
+  }, [issues, selectedUsers, timeFrame])
 
   return (
     <div className="chart-container">
       <h1>Issues</h1>
-      {showUsers.length > 0 ? (
+      {selectedUsers.size > 0 ? (
         <>
-          <h5>Number of issues</h5>
+          <h5>number of issues</h5>
           <ResponsiveContainer width="100%" height={450}>
             <AreaChart data={graphData} margin={{ left: -35 }}>
               <defs>
@@ -69,7 +74,7 @@ const IssuesGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
               <YAxis />
               <Tooltip />
               <Legend verticalAlign="bottom" />
-              {showUsers.map((user, userIdx) => {
+              {Array.from(selectedUsers).map((user, userIdx) => {
                 const color = colors[userIdx]
                 const fill = "url(#" + color + ")"
                 return (
@@ -87,7 +92,7 @@ const IssuesGraph: FC<GraphProps> = ({ showUsers, timeFrame }) => {
           </ResponsiveContainer>
         </>
       ) : (
-        <h3>Select one or more users to view graph</h3>
+        <h4>Select one or more users to view graph</h4>
       )}
     </div>
   )

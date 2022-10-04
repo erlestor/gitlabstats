@@ -1,43 +1,45 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react"
-import { FilterOptionsContext } from "."
+import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { FilterOptionsContext } from ".";
+import { Member } from "../../entities/member";
 import {
   getRepoInformation,
   saveFilterInformation,
-} from "../getRepoInformation"
-import { getAllMembers, Member } from "../services/gitlabService"
-import styles from "./side-bar.module.css"
+} from "../../services/getRepoInformation";
+import { getAllMembers } from "../../services/gitlabService";
+import styles from "./side-bar.module.css";
 
 export function SideBar() {
-  const [members, setMembers] = useState<Member[] | null>(null)
+  const [members, setMembers] = useState<Member[] | null>(null);
   useEffect(() => {
     getAllMembers(getRepoInformation().projectId).then((members) =>
       setMembers(members)
-    )
-  }, [])
+    );
+  }, []);
 
   const { filterOptions, setFilterOptions, timeFrames } =
-    useContext(FilterOptionsContext)!
+    useContext(FilterOptionsContext)!;
 
   useEffect(() => {
-    saveFilterInformation(filterOptions)
-  }, [filterOptions])
+    saveFilterInformation(filterOptions);
+  }, [filterOptions]);
 
   function selectPersonChange(evt: ChangeEvent<HTMLInputElement>) {
-    filterOptions.persons[evt.target.value] = evt.target.checked
+    if (evt.target.checked) {
+      filterOptions.selectedUsers.add(evt.target.value);
+    } else {
+      filterOptions.selectedUsers.delete(evt.target.value);
+    }
     setFilterOptions({
       ...filterOptions,
-      persons: {
-        ...filterOptions.persons,
-        [evt.target.value]: evt.target.checked,
-      },
-    })
+      selectedUsers: new Set(filterOptions.selectedUsers),
+    });
   }
 
   function setSelectedTimeFrame(timeframe: string) {
     setFilterOptions({
       ...filterOptions,
       selectedTimeFrame: timeframe,
-    })
+    });
   }
 
   return (
@@ -59,10 +61,10 @@ export function SideBar() {
             </div>
           ))}
           <h3>Persons</h3>
-          {members!.map((person) => (
+          {members.map((person) => (
             <div key={person.id}>
               <input
-                checked={filterOptions.persons[person.name]}
+                checked={filterOptions.selectedUsers.has(person.name)}
                 onChange={selectPersonChange}
                 type="checkbox"
                 value={person.name}
@@ -73,5 +75,5 @@ export function SideBar() {
         </>
       )}
     </div>
-  )
+  );
 }

@@ -1,26 +1,28 @@
-import React, { useState } from "react"
-import { FrontPage } from "./frontPage"
-import StatsPage from "./stats-page"
-import Header from "./header/header"
+import { useState } from "react";
+import { AuthenticationPage } from "./components/authentication/AuthenticationPage";
 import {
   hasRepoInformation,
-  saveRepoInformation,
   RepoInformation,
-} from "./getRepoInformation"
+  saveRepoInformation,
+} from "./services/getRepoInformation";
+import Header from "./components/header/Header";
+import StatsPage from "./components/stats-page";
 
 function App() {
-  const [showFrontPage, setShowFrontPage] = useState(!hasRepoInformation())
+  const [showAuthenticationPage, setShowAuthenticationPage] = useState(
+    !hasRepoInformation()
+  );
 
-  /**
-   * If the application do have repository information it displays stats page
-   */
-  if (!showFrontPage) {
+  if (!showAuthenticationPage) {
+    /**
+     * If the application do have repository information it displays stats page
+     */
     return (
       <>
-        <Header setShowFrontPage={setShowFrontPage} />
+        <Header setShowAuthenticationPage={setShowAuthenticationPage} />
         <StatsPage />
       </>
-    )
+    );
   }
 
   /**
@@ -28,14 +30,14 @@ function App() {
    */
   return (
     <>
-      <FrontPage
+      <AuthenticationPage
         callback={(repoInformation: RepoInformation) => {
-          saveRepoInformation(repoInformation)
-          setShowFrontPage(false)
+          saveRepoInformation(repoInformation);
+          setShowAuthenticationPage(false);
         }}
       />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,5 +1,3 @@
-import React from "react";
-
 /* Method to support gitlabService.
 * It is used to filter out the data we want from the API calls.
 * Parameters: object to strip and the properties of this object to keep.

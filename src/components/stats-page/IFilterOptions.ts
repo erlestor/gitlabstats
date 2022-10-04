@@ -1,6 +1,4 @@
 export interface FilterOptions {
-  persons: {
-    [key: string]: boolean;
-  };
+  selectedUsers: Set<string>;
   selectedTimeFrame: string;
 }

@@ -1,101 +1,87 @@
-import axios from "axios";
-import { stripObject } from "./stripObject";
-import { getRepoInformation, RepoInformation } from "../getRepoInformation";
+import axios from "axios"
+import {
+  getRepoInformation,
+  RepoInformation,
+} from "../services/getRepoInformation"
+import { Commit } from "../entities/commit"
+import { Member } from "../entities/member"
+import { Issue } from "../entities/issue"
+import { stripObject } from "./stripObject"
 
-//This file gets data from the gitlab API.
+const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/"
 
-//The baseURL for all of the API calls.
-const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/";
-
-//The interface for a commit type. 
-export interface Commit {
-  created_at: string;
-  author_name: string;
-}
-
-//The interface for a issue type.
-export interface Issue {
-  created_at: string;
-  author: {
-    username: string;
-    name: string;
-  };
-}
-
-//The interface for a member type
-export interface Member {
-  id: number;
-  username: string;
-  name: string;
-}
-
-/*Get all the members in the repository
-* Parameters: project id as a number
-* Returns a Member
-* Throws error if the response is not 200
-*/
-export const getAllMembers = async (id: number): Promise<Member[]> => {
-  return axios
-    .get(baselineUrl + `${id}/members/all`, {
+async function requestGitlab<T>(
+  path: string,
+  searchParams?: Map<string, any>,
+  token?: string
+) {
+  const url = new URL(path, baselineUrl)
+  if (searchParams) {
+    searchParams.forEach((value, key) => {
+      url.searchParams.append(key, value)
+    })
+  }
+  return await axios
+    .get(url.toString(), {
       headers: {
-        Authorization: `Bearer ${getRepoInformation().token}`,
+        Authorization: `Bearer ${token ?? getRepoInformation().token}`,
       },
     })
     .then((response) => {
-      if (response.status === 200) {
-        return (response.data as Member[]).map((e) => {
-          const data = stripObject<Member>(e, ["id", "username", "name"]);
-          return data;
-        });
+      if (!response.status.toString().startsWith("2")) {
+        throw new Error("Request with path: " + path + " failed")
       }
-      throw Error("failed to fetch data");
-    });
-};
+      return response.data as T
+    })
+}
+
+export const getAllMembers = async (id: number): Promise<Member[]> => {
+  return requestGitlab<Member[]>(`${id}/members/all`).then((members) => {
+    return members.map((m) =>
+      stripObject<Member>(m, ["id", "username", "name"])
+    )
+  })
+}
 
 /* Formats the data from the commit API call to be compatible with the graph
 * Parameters: the data to format
 * Returns an array with the data.
 */
-const dataToGraphCommits = (data: any) => {
-  let users = data.map((commit: Commit) => commit.author_name);
-  users = new Set(users);
-  users = [...users];
-  // users are now all the unique author names that have commited
+const dataToGraphCommits = (data: Commit[]): Commit[] => {
+  const users = new Set(data.map((commit: Commit) => commit.author_name))
 
-  const graphCommits: any = [];
+  const graphCommits: any = []
   users.forEach((user: any) => {
     // get commits for a single user
-    const commits = data.filter(
-      (commit: Commit) => commit.author_name === user
-    );
+    const commits = data.filter((commit: Commit) => commit.author_name === user)
     // sort by date ascending
     commits.sort(
       (c1: any, c2: any) =>
         new Date(c1.created_at).getTime() - new Date(c2.created_at).getTime()
-    );
+    )
 
-    const commitData: any = []; // {authorName, date, numberOfCommits}
+    const commitData: any = [] // {authorName, date, numberOfCommits}
 
     // now count the number of commits on each date in commits
     commits.forEach((commit: Commit) => {
-      const date = commit.created_at.substring(0, 10);
+      const date = commit.created_at.substring(0, 10)
       // if date is already added
       const commitsAtDate = commitData.filter(
         (c: any) =>
           new Date(commit.created_at.substring(0, 10)).getTime() ===
           new Date(c.date).getTime()
-      );
+      )
       if (commitsAtDate.length > 0) {
-        commitsAtDate[0].numberOfCommits += 1;
+        commitsAtDate[0].numberOfCommits += 1
       } else {
-        commitData.push({ authorName: user, date: date, numberOfCommits: 1 });
+        commitData.push({ authorName: user, date: date, numberOfCommits: 1 })
       }
-    });
-    graphCommits.push(commitData);
-  });
+    })
+    graphCommits.push(commitData)
+  })
 
-  return graphCommits;
-};
+  return graphCommits
+}
 
 /*Get the commits. Can be filtered by dates.
 * Have to pass in undefined for startdate to get correct end date
@@ -107,86 +93,67 @@ const dataToGraphCommits = (data: any) => {
 */
 export const getCommits = async (
   projectId: number,
-  startDate?: string,
-  endDate?: string
+  since?: string,
+  until?: string
 ): Promise<Commit[]> => {
-  let url = baselineUrl + `${projectId}/repository/commits?per_page=9999`;
-
-  if (startDate && endDate) {
-    url = url + `&since=${startDate}&until=${endDate}`;
+  const path = `${projectId}/repository/commits?per_page=9999`
+  const searchParams = new Map<string, any>()
+  if (since) {
+    searchParams.set("since", since)
   }
-  if (startDate && !endDate) {
-    url = url + `&since=${startDate}`;
+  if (until) {
+    searchParams.set("until", until)
   }
-  if (!startDate && endDate) {
-    url = url + `&until=${endDate}`;
-  }
-
-  return axios
-    .get(url, {
-      headers: {
-        Authorization: `Bearer ${getRepoInformation().token}`,
-      },
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        let data = response.data;
-        data = data.map((commit: Commit) => {
-          const { created_at, author_name } = commit;
-          return {
-            created_at,
-            author_name,
-          };
-        });
-        const graphData = dataToGraphCommits(data);
-        return graphData as Commit[];
-      }
-      throw Error("Could not fetch the commit data");
-    });
-};
+  return requestGitlab<Commit[]>(path, searchParams).then((commits) => {
+    const data = commits.map((commit: Commit) =>
+      stripObject(commit, ["author_name", "created_at"])
+    )
+    return dataToGraphCommits(data)
+  })
+}
 
 /* Formats the data from the issues API call to be compatible with the graph
 * Parameters: the data to format
 * Returns an array with the data.
 */
 const dataToGraphIssues = (data: any) => {
-  let users = data.map((issue: Issue) => issue.author.name);
-  users = new Set(users);
-  users = [...users];
+  let users = data.map((issue: Issue) => issue.author.name)
+  users = new Set(users)
+  users = [...users]
   // users are now all the unique author names that have created an issue
 
-  const graphIssues: any = [];
+  const graphIssues: any = []
   users.forEach((user: any) => {
     // get commits for a single user
-    const issues = data.filter((issue: Issue) => issue.author.name === user);
+    const issues = data.filter((issue: Issue) => issue.author.name === user)
     // sort by date ascending
     issues.sort(
       (i1: any, i2: any) =>
         new Date(i1.created_at).getTime() - new Date(i2.created_at).getTime()
-    );
+    )
 
-    const issueData: any = []; // {authorName, date, numberOfCommits}
+    const issueData: any = [] // {authorName, date, numberOfCommits}
 
     // now count the number of commits on each date in commits
     issues.forEach((issue: Issue) => {
-      const date = issue.created_at.substring(0, 10);
+      const date = issue.created_at.substring(0, 10)
       // if date is already added
       const issuesAtDate = issueData.filter(
         (i: any) =>
           new Date(issue.created_at.substring(0, 10)).getTime() ===
           new Date(i.date).getTime()
-      );
+      )
       if (issuesAtDate.length > 0) {
-        issuesAtDate[0].numberOfIssues += 1;
+        issuesAtDate[0].numberOfIssues += 1
       } else {
-        issueData.push({ authorName: user, date: date, numberOfIssues: 1 });
+        issueData.push({ authorName: user, date: date, numberOfIssues: 1 })
       }
-    });
-    graphIssues.push(issueData);
-  });
+    })
+    graphIssues.push(issueData)
+  })
 
-  return graphIssues;
-};
+  return graphIssues
+}
 
 
 /*Get the issues. Can filter by a start date
@@ -197,33 +164,23 @@ const dataToGraphIssues = (data: any) => {
 */
 export const getIssues = async (
   projectId: number,
-  afterDate?: string
+  createdAfter?: string
 ): Promise<Issue[]> => {
-  let url = baselineUrl + `${projectId}/issues?per_page=9999`;
-
-  if (afterDate) {
-    url = url + `&created_after=${afterDate}`;
+  const path = `${projectId}/issues`
+  const searchParams = new Map<string, any>()
+  searchParams.set("per_page", 9999)
+  if (createdAfter) {
+    searchParams.set("created_after", createdAfter)
   }
-
-  return axios
-    .get(url, {
-      headers: {
-        Authorization: `Bearer ${getRepoInformation().token}`,
-      },
+  return requestGitlab<Issue[]>(path, searchParams).then((issues) => {
+    const data = issues.map((e) => {
+      e.author = stripObject(e.author, ["name", "username"])
+      const data = stripObject<Issue>(e, ["author", "created_at"])
+      return data
     })
-    .then((response) => {
-      if (response.status === 200) {
-        const data = (response.data as Issue[]).map((e) => {
-          e.author = stripObject(e.author, ["name", "username"]);
-          const data = stripObject<Issue>(e, ["author", "created_at"]);
-          return data;
-        });
-        const graphData = dataToGraphIssues(data);
-        return graphData;
-      }
-      throw Error("failed to fetch");
-    });
-};
+    return dataToGraphIssues(data)
+  })
+}
 
 /* Used to validate if the repo information inputed by the user is valid.
 * Parameters: the repo information
@@ -232,23 +189,14 @@ export const getIssues = async (
 */
 export const validateRepoInformation = async (
   repoInformation: RepoInformation
-): Promise<boolean> => {
-  if (!repoInformation.projectId || !repoInformation.token)
-    throw Error("No repo information");
-  const { token, projectId } = repoInformation;
-  const url = baselineUrl + `${projectId}`;
+): Promise<void> => {
+  if (!repoInformation.projectId || !repoInformation.token) {
+    throw Error("No repo information")
+  }
 
-  return axios
-    .get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        const data = response.data;
-        if (data) return true;
-      }
-      throw Error("failed to fetch");
-    });
-};
+  return requestGitlab(
+    repoInformation.projectId.toString(),
+    undefined,
+    repoInformation.token
+  )
+}
