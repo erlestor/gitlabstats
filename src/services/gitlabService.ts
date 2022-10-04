@@ -1,12 +1,12 @@
-import axios from "axios";
+import axios from "axios"
 import {
   getRepoInformation,
   RepoInformation,
-} from "../authentication/getRepoInformation";
-import { Commit } from "../entities/commit";
-import { Member } from "../entities/member";
-import { Issue } from "../entities/issue";
-import { stripObject } from "./stripObject";
+} from "../services/getRepoInformation"
+import { Commit } from "../entities/commit"
+import { Member } from "../entities/member"
+import { Issue } from "../entities/issue"
+import { stripObject } from "./stripObject"
 
 const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/"
 
@@ -15,11 +15,11 @@ async function requestGitlab<T>(
   searchParams?: Map<string, any>,
   token?: string
 ) {
-  const url = new URL(path, baselineUrl);
+  const url = new URL(path, baselineUrl)
   if (searchParams) {
     searchParams.forEach((value, key) => {
-      url.searchParams.append(key, value);
-    });
+      url.searchParams.append(key, value)
+    })
   }
   return await axios
     .get(url.toString(), {
@@ -29,22 +29,22 @@ async function requestGitlab<T>(
     })
     .then((response) => {
       if (!response.status.toString().startsWith("2")) {
-        throw new Error("Request with path: " + path + " failed");
+        throw new Error("Request with path: " + path + " failed")
       }
-      return response.data as T;
-    });
+      return response.data as T
+    })
 }
 
 export const getAllMembers = async (id: number): Promise<Member[]> => {
   return requestGitlab<Member[]>(`${id}/members/all`).then((members) => {
     return members.map((m) =>
       stripObject<Member>(m, ["id", "username", "name"])
-    );
-  });
-};
+    )
+  })
+}
 
 const dataToGraphCommits = (data: Commit[]): Commit[] => {
-  let users = new Set(data.map((commit: Commit) => commit.author_name));
+  let users = new Set(data.map((commit: Commit) => commit.author_name))
 
   const graphCommits: any = []
   users.forEach((user: any) => {
@@ -86,21 +86,21 @@ export const getCommits = async (
   since?: string,
   until?: string
 ): Promise<Commit[]> => {
-  const path = `${projectId}/repository/commits?per_page=9999`;
-  const searchParams = new Map<string, any>();
+  const path = `${projectId}/repository/commits?per_page=9999`
+  const searchParams = new Map<string, any>()
   if (since) {
-    searchParams.set("since", since);
+    searchParams.set("since", since)
   }
   if (until) {
-    searchParams.set("until", until);
+    searchParams.set("until", until)
   }
   return requestGitlab<Commit[]>(path, searchParams).then((commits) => {
     const data = commits.map((commit: Commit) =>
       stripObject(commit, ["author_name", "created_at"])
-    );
-    return dataToGraphCommits(data);
-  });
-};
+    )
+    return dataToGraphCommits(data)
+  })
+}
 
 const dataToGraphIssues = (data: any) => {
   let users = data.map((issue: Issue) => issue.author.name)
@@ -145,33 +145,33 @@ export const getIssues = async (
   projectId: number,
   createdAfter?: string
 ): Promise<Issue[]> => {
-  const path = `${projectId}/issues`;
-  const searchParams = new Map<string, any>();
-  searchParams.set("per_page", 9999);
+  const path = `${projectId}/issues`
+  const searchParams = new Map<string, any>()
+  searchParams.set("per_page", 9999)
   if (createdAfter) {
-    searchParams.set("created_after", createdAfter);
+    searchParams.set("created_after", createdAfter)
   }
   return requestGitlab<Issue[]>(path, searchParams).then((issues) => {
     const data = issues.map((e) => {
-      e.author = stripObject(e.author, ["name", "username"]);
-      const data = stripObject<Issue>(e, ["author", "created_at"]);
-      return data;
-    });
-    return dataToGraphIssues(data);
-  });
-};
+      e.author = stripObject(e.author, ["name", "username"])
+      const data = stripObject<Issue>(e, ["author", "created_at"])
+      return data
+    })
+    return dataToGraphIssues(data)
+  })
+}
 
 /** Throws an error if repo information is not valid */
 export const validateRepoInformation = async (
   repoInformation: RepoInformation
 ): Promise<void> => {
   if (!repoInformation.projectId || !repoInformation.token) {
-    throw Error("No repo information");
+    throw Error("No repo information")
   }
 
   return requestGitlab(
     repoInformation.projectId.toString(),
     undefined,
     repoInformation.token
-  );
-};
+  )
+}

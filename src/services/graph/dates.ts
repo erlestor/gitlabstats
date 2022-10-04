@@ -72,7 +72,7 @@ export const getFormattedDate = (timeFrame: string, date: Date) => {
 // eg.  [{name: "2022-04-10", bruker1: 0, bruker2: 0}]
 export const getDatesAsData = (
   timeFrame: string,
-  showUsers: string[]
+  showUsers: Set<string>
 ): Datapoint[] => {
   const dateSpan = getDateSpan(timeFrame)
   const datesInRange = getDatesInRange(timeFrame, dateSpan[0], dateSpan[1])
