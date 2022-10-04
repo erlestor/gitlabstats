@@ -1,7 +1,9 @@
-import styles from "./frontPage.module.css";
-import backgroundBig from "./images/backgroundBig.jpg";
-import backgroundSmall from "./images/backgroundSmall.jpg";
-import AuthenticationForm, { AuthenticationFormProps } from "./authenticationForm";
+import styles from "./authenticationPage.module.css"
+import backgroundBig from "../../images/backgroundBig.jpg"
+import backgroundSmall from "../../images/backgroundSmall.jpg"
+import AuthenticationForm, {
+  AuthenticationFormProps,
+} from "./AuthenticationForm"
 
 export function AuthenticationPage(props: AuthenticationFormProps) {
   return (
@@ -15,5 +17,5 @@ export function AuthenticationPage(props: AuthenticationFormProps) {
     >
       <AuthenticationForm callback={props.callback} />
     </div>
-  );
+  )
 }

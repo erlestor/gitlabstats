@@ -1,11 +1,15 @@
-import { useState } from "react";
-import { AuthenticationPage } from "./authentication/authenticationPage";
-import { hasRepoInformation, RepoInformation, saveRepoInformation } from "./authentication/getRepoInformation";
-import Header from "./header/header";
-import StatsPage from "./stats-page";
+import { useState } from "react"
+import { AuthenticationPage } from "./components/authentication/AuthenticationPage"
+import {
+  hasRepoInformation,
+  RepoInformation,
+  saveRepoInformation,
+} from "./services/getRepoInformation"
+import Header from "./components/header/Header"
+import StatsPage from "./components/stats-page"
 
 function App() {
-  const [showFrontPage, setShowFrontPage] = useState(!hasRepoInformation());
+  const [showFrontPage, setShowFrontPage] = useState(!hasRepoInformation())
 
   if (!showFrontPage) {
     return (
@@ -13,19 +17,19 @@ function App() {
         <Header setShowFrontPage={setShowFrontPage} />
         <StatsPage />
       </>
-    );
+    )
   }
 
   return (
     <>
       <AuthenticationPage
         callback={(repoInformation: RepoInformation) => {
-          saveRepoInformation(repoInformation);
-          setShowFrontPage(false);
+          saveRepoInformation(repoInformation)
+          setShowFrontPage(false)
         }}
       />
     </>
-  );
+  )
 }
 
-export default App;
+export default App

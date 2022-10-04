@@ -1,4 +1,4 @@
-import { FilterOptions } from "../stats-page/IFilterOptions"
+import { FilterOptions } from "../components/stats-page/IFilterOptions"
 
 export interface RepoInformation {
   token: string
@@ -6,9 +6,9 @@ export interface RepoInformation {
 }
 
 let repoInformation: RepoInformation | null = null
-const tokenKey = "token";
-const projectIdKey = "projectId";
-const filterOptionsKey = "filterOptions";
+const tokenKey = "token"
+const projectIdKey = "projectId"
+const filterOptionsKey = "filterOptions"
 
 const getLocalStorageToken = (): string | null => {
   return localStorage.getItem(tokenKey)

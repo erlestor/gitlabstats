@@ -1,7 +1,7 @@
 import React from "react"
 import styles from "./authenticationPage.module.css"
-import { RepoInformation } from "./getRepoInformation"
-import { validateRepoInformation } from "../services/gitlabService"
+import { RepoInformation } from "../../services/getRepoInformation"
+import { validateRepoInformation } from "../../services/gitlabService"
 
 export type AuthenticationFormProps = {
   callback: (repoInformation: RepoInformation) => void
@@ -37,7 +37,7 @@ export default class AuthenticationForm extends React.Component<
     const token = this.state.token
     const projectId = Number(this.state.projectId)
 
-    await validateRepoInformation({projectId, token})
+    await validateRepoInformation({ projectId, token })
       .then((valid) => {
         if (valid) {
           this.setState({ error: "" })

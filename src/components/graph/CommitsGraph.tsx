@@ -10,9 +10,9 @@ import {
 } from "recharts"
 import "./graph.css"
 import { FC, useEffect, useState } from "react"
-import { getGraphData } from "./commitsToGraph"
-import { getCommits } from "../services/gitlabService"
-import { getRepoInformation } from "../authentication/getRepoInformation"
+import { getGraphData } from "../../services/graph/commitsToGraph"
+import { getCommits } from "../../services/gitlabService"
+import { getRepoInformation } from "../../services/getRepoInformation"
 
 interface GraphProps {
   showUsers: string[]

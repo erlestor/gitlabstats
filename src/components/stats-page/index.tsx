@@ -1,9 +1,9 @@
 import { createContext, useState } from "react"
-import { getFilterInformation } from "../getRepoInformation"
-import Graphs from "./graphs"
+import { getFilterInformation } from "../../services/getRepoInformation"
+import Graphs from "./Graphs"
 import { FilterOptions } from "./IFilterOptions"
 import styles from "./index.module.css"
-import { SideBar } from "./side-bar"
+import { SideBar } from "./SideBar"
 
 export const FilterOptionsContext = createContext<{
   filterOptions: FilterOptions
