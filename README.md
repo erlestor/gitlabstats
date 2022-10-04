@@ -7,14 +7,14 @@
 
 ## Komponentstruktur
 
-Vi har benyttet hovedsaklig funksjonelle komponenter. Disse komponentene er enklere å lese og krever mindre "boilerplate" sammenlignet med klasser. I tillegg har de noe bedre ytelse. 
+Vi har benyttet hovedsakelig funksjonelle komponenter. Disse komponentene er enklere å lese og krever mindre "boilerplate" sammenlignet med klasser. I tillegg har de noe bedre ytelse. 
 
-AuthenticationFrom-komponenten er derimot laget som en class. Her lagrer informasjon om hva brukeren har skrevet i input-feltene og sende denne informasjonen videre. 
+AuthenticationFrom-komponenten er derimot laget som en class. Her lagres informasjon om hva brukeren har skrevet i input-feltene og sender denne informasjonen videre. 
 
 ## Context API'et
 
-Vi har benyttet Context API'et for å sende filtreringsinformasjon mellom komponentene. Dette gjør det enklere å hente og oppdatere informasjon selv dypt nede i komponenthierarkiet. Vi sender både filtreringinformasjon og en
-funksjon til å oppdatere denne dataen ned til komponentene. Filtreringsinformasjonen blir brukt av alle graf 
+Vi har benyttet Context API'et for å sende filtreringsinformasjon mellom komponentene. Dette gjør det enklere å hente og oppdatere informasjon selv dypt nede i komponenthierarkiet. Vi sender både filtreringsinformasjon og en
+funksjon til å oppdatere denne filtreringsinformasjonen. Filtreringsinformasjonen blir brukt av alle graf 
 komponentene, samt sidebar-komponenten.
 
 ## AJAX
@@ -25,7 +25,7 @@ Vi har valgt å bruke tredjepartsbiblioteket axios for å laste data fra GitLab.
 
 I prosjektet brukes localstorage for å lagre prosjekt-ID. Videre kan vi da hente ut informasjonen ved å kalle localStorage.getItem() og logge inn denne brukeren automatisk. På denne måten slipper innlogget bruker å logge seg inn hver gang en vil aksessere siden.
 
-Sessionstorage er tatt i bruk for å lagre filtervalg. Hver gang brukeren oppdaterer filtervalgene vil informasjonen lagres i session storage med sessionStorage.setItem(). Deretter benyttes sessionStorage.getItem() for å hente ut tidligere filtervalg, dersom brukeren oppdaterer siden. Data lagret i sessionstorage vil bli slettet når brukeren lukker nettleseren.
+Sessionstorage er tatt i bruk for å lagre filtervalg. Hver gang brukeren oppdaterer filtervalgene vil informasjonen lagres i session storage med sessionStorage.setItem(). Deretter benyttes sessionStorage.getItem() for å hente ut tidligere filtervalg dersom brukeren oppdaterer siden. Data lagret i sessionstorage vil bli slettet når brukeren lukker nettleseren.
 
 ## Responsiv Web Design
 
@@ -33,7 +33,7 @@ Et av kravene i oppgaven var at nettsiden skal være tilpasset mobil, pad og pc.
 
 For pc og pad har vi en header sammensatt av en overskrift og logg ut knapp, en sidebar bestående av ulike filtervalg og hovedsiden som brukes for å vise grafene. Sidebaren har en minimums bredde noe som gjør at kun størrelsen på hovedsiden endrer seg når vinduet blir større/mindre.
 
-For at designet skal fungere på mobil, har vi benyttet media queries til å endre den overordnede strukturen på nettsiden når vindustørrelsen minker. Sidebaren vil da bli byttet ut med en filter knapp liggede mellom headeren og hovedsiden. Dersom en trykker på denne knappen vil filtervalgene fremvises til bruker og ta opp hele skjermen (header vises fortsatt). Teksten i header blir også mindre når skjermen blir mindre for å unngå overflyt av teksten.
+For at designet skal fungere på mobil, har vi benyttet media queries til å endre den overordnede strukturen på nettsiden når vindustørrelsen minker. Sidebaren vil da bli byttet ut med en filter knapp liggede mellom headeren og hovedsiden. Dersom man trykker på denne knappen vil filtervalgene fremvises til bruker og ta opp hele skjermen (header vises fortsatt). Teksten i header blir også mindre når skjermen blir mindre for å unngå overflyt av teksten.
 
 Grafene er laget med biblioteket [recharts](https://recharts.org/). Grafene i seg selv tegnes automatisk og er responsiv, men containeren rundt har i utgangspunktet fast høyde og bredde. Derimot har recharts en `<ReponsiveContainer>` som gjør at man kan sette bredden til å ta opp hele containeren den er i.
 
@@ -51,7 +51,7 @@ Testene kjøres med `npm test`
 
 ### Testing av brukergrensesnitt og responsivt design
 
-Applikasjonen har blitt testet på en iPhone XS med en oppløsning på 2436x1125 i vertikal og horisontal(landskap) vinkling. Applikasjonen kjører som den skal og tilpasser seg skjermstørelsen, hvor sideelementene endrer seg avhengig av om den brukes i horisontal eller vertikal modus. I horisontal modus vil det dukke opp noen små hvite rammer på hver side av applikasjonen som er ca like store som "busslommen" på toppen av mobilen. Den fungerer derimot som den skal og ser fremdeles bra ut. I horisontal modus er vil filteropsjonene vises på siden akkurat som på større skjermer. I vertikal modus forsvinner filtermenyen og den blir erstattet av filterknappen. Dette er forventet oppførsel.
+Applikasjonen har blitt testet på en iPhone XS med en oppløsning på 2436x1125 i vertikal og horisontal(landskap) vinkling. Applikasjonen kjører som den skal og tilpasser seg skjermstørrelsen, hvor sideelementene endrer seg avhengig av om den brukes i horisontal eller vertikal modus. I horisontal modus vil det dukke opp noen små hvite rammer på hver side av applikasjonen som er ca like store som "busslommen" på toppen av mobilen. Den fungerer derimot som den skal og ser fremdeles bra ut. I horisontal modus er vil filteropsjonene vises på siden akkurat som på større skjermer. I vertikal modus forsvinner filtermenyen og den blir erstattet av filterknappen. Dette er forventet oppførsel.
 
 Applikasjonen har blitt testet på en MacBook Pro 13 tommer i Safari og Google Chrome. Applikasjonens oppførsel er som forventet i begge i nettlesere og den oppfører seg som den skal. I Google Chrome har den også blitt testet ved å velge oppløsningen til ulike enheter som for eksempel iPhone SE. Den er ikke simulert på telefoner med lavere oppløsning (mindre skjermstørrelse) enn iPhone SE, men denne telefonen er en av de mindre på markedet og har samme skjermstørrelse som iPhoner helt tilbake til 2014.
 
