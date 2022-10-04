@@ -8,19 +8,16 @@ describe("Header", () => {
   })
 
   it("should be able to authenticate with repo information", async () => {
-    let funcCalled = false
+    const logOutFunc = jest.fn();
 
-    const checkIfLogout = () => {
-      funcCalled = true
-    }
-
-    render(<Header setShowAuthenticationPage={checkIfLogout} />)
+    render(<Header setShowAuthenticationPage={logOutFunc} />)
     expect(screen.getByTestId("header")).toBeInTheDocument()
     expect(screen.getByTestId("header-log-out")).toBeInTheDocument()
     expect(screen.getByText("GitLab Stats Pro")).toBeInTheDocument()
 
     // check if function called on logout is actually true
+    expect(logOutFunc).toBeCalledTimes(0)
     screen.getByTestId("header-log-out").click()
-    expect(funcCalled).toBeTruthy()
+    expect(logOutFunc).toBeCalledTimes(1)
   })
 })
