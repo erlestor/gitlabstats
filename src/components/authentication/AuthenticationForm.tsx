@@ -3,7 +3,6 @@ import { RepoInformation } from "../../services/getRepoInformation";
 import { validateRepoInformation } from "../../services/gitlabService";
 import styles from "./authenticationPage.module.css";
 
-
 export type AuthenticationFormProps = {
   callback: (repoInformation: RepoInformation) => void;
 };
@@ -29,6 +28,11 @@ export default class AuthenticationForm extends React.Component<
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  /**
+   * Function which runs every time the user modifies values in the input fields
+   *
+   * Uses event to access the targeted input field and get its new value
+   */
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ ...this.state, [event.target.name]: event.target.value });
   }
@@ -39,7 +43,7 @@ export default class AuthenticationForm extends React.Component<
     const projectId = Number(this.state.projectId);
 
     await validateRepoInformation({ projectId, token })
-      .then(() => { 
+      .then(() => {
         this.setState({ error: "" });
         this.props.callback(this.state as RepoInformation);
       })
