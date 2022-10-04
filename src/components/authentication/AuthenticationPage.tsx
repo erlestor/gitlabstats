@@ -15,5 +15,5 @@ export function AuthenticationPage(props: AuthenticationFormProps) {
     >
       <AuthenticationForm callback={props.callback} />
     </div>
-  );
+  )
 }

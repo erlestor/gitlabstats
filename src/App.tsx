@@ -1,8 +1,12 @@
-import { useState } from "react";
-import { AuthenticationPage } from "./authentication/authenticationPage";
-import { hasRepoInformation, RepoInformation, saveRepoInformation } from "./authentication/getRepoInformation";
-import Header from "./header/header";
-import StatsPage from "./stats-page";
+import { useState } from "react"
+import { AuthenticationPage } from "./components/authentication/AuthenticationPage"
+import {
+  hasRepoInformation,
+  RepoInformation,
+  saveRepoInformation,
+} from "./services/getRepoInformation"
+import Header from "./components/header/Header"
+import StatsPage from "./components/stats-page"
 
 function App() {
   const [showAuthenticationPage, setShowAuthenticationPage] = useState(!hasRepoInformation());
@@ -13,7 +17,7 @@ function App() {
         <Header setShowAuthenticationPage={setShowAuthenticationPage} />
         <StatsPage />
       </>
-    );
+    )
   }
 
   return (
@@ -25,7 +29,7 @@ function App() {
         }}
       /> 
     </>
-  );
+  )
 }
 
-export default App;
+export default App

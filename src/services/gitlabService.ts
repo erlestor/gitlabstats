@@ -8,7 +8,7 @@ import { Member } from "../entities/member";
 import { Issue } from "../entities/issue";
 import { stripObject } from "./stripObject";
 
-const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/";
+const baselineUrl = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/"
 
 async function requestGitlab<T>(
   path: string,
@@ -46,40 +46,38 @@ export const getAllMembers = async (id: number): Promise<Member[]> => {
 const dataToGraphCommits = (data: Commit[]): Commit[] => {
   let users = new Set(data.map((commit: Commit) => commit.author_name));
 
-  const graphCommits: any = [];
+  const graphCommits: any = []
   users.forEach((user: any) => {
     // get commits for a single user
-    const commits = data.filter(
-      (commit: Commit) => commit.author_name === user
-    );
+    const commits = data.filter((commit: Commit) => commit.author_name === user)
     // sort by date ascending
     commits.sort(
       (c1: any, c2: any) =>
         new Date(c1.created_at).getTime() - new Date(c2.created_at).getTime()
-    );
+    )
 
-    const commitData: any = []; // {authorName, date, numberOfCommits}
+    const commitData: any = [] // {authorName, date, numberOfCommits}
 
     // now count the number of commits on each date in commits
     commits.forEach((commit: Commit) => {
-      const date = commit.created_at.substring(0, 10);
+      const date = commit.created_at.substring(0, 10)
       // if date is already added
       const commitsAtDate = commitData.filter(
         (c: any) =>
           new Date(commit.created_at.substring(0, 10)).getTime() ===
           new Date(c.date).getTime()
-      );
+      )
       if (commitsAtDate.length > 0) {
-        commitsAtDate[0].numberOfCommits += 1;
+        commitsAtDate[0].numberOfCommits += 1
       } else {
-        commitData.push({ authorName: user, date: date, numberOfCommits: 1 });
+        commitData.push({ authorName: user, date: date, numberOfCommits: 1 })
       }
-    });
-    graphCommits.push(commitData);
-  });
+    })
+    graphCommits.push(commitData)
+  })
 
-  return graphCommits;
-};
+  return graphCommits
+}
 
 // Get commits sorted on given dates
 // Have to pass in undefined for startdate to get correct enddate
@@ -105,43 +103,43 @@ export const getCommits = async (
 };
 
 const dataToGraphIssues = (data: any) => {
-  let users = data.map((issue: Issue) => issue.author.name);
-  users = new Set(users);
-  users = [...users];
+  let users = data.map((issue: Issue) => issue.author.name)
+  users = new Set(users)
+  users = [...users]
   // users are now all the unique author names that have created an issue
 
-  const graphIssues: any = [];
+  const graphIssues: any = []
   users.forEach((user: any) => {
     // get commits for a single user
-    const issues = data.filter((issue: Issue) => issue.author.name === user);
+    const issues = data.filter((issue: Issue) => issue.author.name === user)
     // sort by date ascending
     issues.sort(
       (i1: any, i2: any) =>
         new Date(i1.created_at).getTime() - new Date(i2.created_at).getTime()
-    );
+    )
 
-    const issueData: any = []; // {authorName, date, numberOfCommits}
+    const issueData: any = [] // {authorName, date, numberOfCommits}
 
     // now count the number of commits on each date in commits
     issues.forEach((issue: Issue) => {
-      const date = issue.created_at.substring(0, 10);
+      const date = issue.created_at.substring(0, 10)
       // if date is already added
       const issuesAtDate = issueData.filter(
         (i: any) =>
           new Date(issue.created_at.substring(0, 10)).getTime() ===
           new Date(i.date).getTime()
-      );
+      )
       if (issuesAtDate.length > 0) {
-        issuesAtDate[0].numberOfIssues += 1;
+        issuesAtDate[0].numberOfIssues += 1
       } else {
-        issueData.push({ authorName: user, date: date, numberOfIssues: 1 });
+        issueData.push({ authorName: user, date: date, numberOfIssues: 1 })
       }
-    });
-    graphIssues.push(issueData);
-  });
+    })
+    graphIssues.push(issueData)
+  })
 
-  return graphIssues;
-};
+  return graphIssues
+}
 
 export const getIssues = async (
   projectId: number,

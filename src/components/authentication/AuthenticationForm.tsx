@@ -1,7 +1,8 @@
 import React from "react";
+import { RepoInformation } from "../../services/getRepoInformation";
+import { validateRepoInformation } from "../../services/gitlabService";
 import styles from "./authenticationPage.module.css";
-import { RepoInformation } from "./getRepoInformation";
-import { validateRepoInformation } from "../services/gitlabService";
+
 
 export type AuthenticationFormProps = {
   callback: (repoInformation: RepoInformation) => void;

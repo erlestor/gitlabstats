@@ -1,11 +1,11 @@
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { FilterOptionsContext } from ".";
+import { Member } from "../../entities/member";
 import {
   getRepoInformation,
   saveFilterInformation,
-} from "../authentication/getRepoInformation";
-import { Member } from "../entities/member";
-import { getAllMembers } from "../services/gitlabService";
+} from "../../services/getRepoInformation";
+import { getAllMembers } from "../../services/gitlabService";
 import styles from "./side-bar.module.css";
 
 export function SideBar() {

@@ -7,40 +7,40 @@ import {
   AreaChart,
   Area,
   ResponsiveContainer,
-} from "recharts";
-import "./graph.css";
-import { FC, useEffect, useState } from "react";
-import { getGraphData } from "./commitsToGraph";
-import { getCommits } from "../services/gitlabService";
-import { getRepoInformation } from "../authentication/getRepoInformation";
+} from "recharts"
+import "./graph.css"
+import { FC, useEffect, useState } from "react"
+import { getIssues } from "../../services/gitlabService"
+import { getIssueGraphData } from "../../services/graph/issuesToGraph"
+import { getRepoInformation } from "../../services/getRepoInformation"
 
 interface GraphProps {
   selectedUsers: Set<string>;
   timeFrame: string;
 }
 
-const CommitsGraph: FC<GraphProps> = ({ selectedUsers, timeFrame }) => {
+const IssuesGraph: FC<GraphProps> = ({ selectedUsers, timeFrame }) => {
   const colors = ["#8884d8", "green", "red", "purple", "blue"];
-  const [commits, setCommits] = useState([]);
+  const [issues, setIssues] = useState([]);
   const [graphData, setGraphData]: any = useState([]);
 
   useEffect(() => {
     const projectId = getRepoInformation().projectId;
     if (!projectId) return;
 
-    getCommits(projectId).then((commits: any) => {
-      setCommits(commits);
+    getIssues(projectId).then((issues: any) => {
+      setIssues(issues);
     });
   }, []);
 
   useEffect(() => {
-    const graphData = getGraphData(timeFrame, selectedUsers, commits);
+    const graphData = getIssueGraphData(timeFrame, selectedUsers, issues);
     setGraphData(graphData);
-  }, [commits, selectedUsers, timeFrame]);
+  }, [issues, selectedUsers, timeFrame]);
 
   return (
     <div className="chart-container">
-      <h5>number of commits</h5>
+      <h5>Number of issues</h5>
       <ResponsiveContainer width="100%" height={450}>
         <AreaChart data={graphData} margin={{ left: -35 }}>
           <defs>
@@ -83,4 +83,4 @@ const CommitsGraph: FC<GraphProps> = ({ selectedUsers, timeFrame }) => {
   );
 };
 
-export default CommitsGraph;
+export default IssuesGraph;
