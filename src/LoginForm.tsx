@@ -3,11 +3,18 @@ import styles from "./frontPage.module.css"
 import { RepoInformation } from "./getRepoInformation"
 import { validateRepoInformation } from "./services/gitlabService"
 
+/**
+ * Define LoginFormProps
+ */
 export type LoginFormProps = {
   callback: (repoInformation: RepoInformation) => void
 }
 
+/**
+ * Exports the login form
+ */
 export default class LoginForm extends React.Component<
+
   LoginFormProps,
   {
     token: string
@@ -15,6 +22,9 @@ export default class LoginForm extends React.Component<
     error: string
   }
 > {
+  /**
+   * Costructor which changes the classes state based on LoginFormProps
+   */
   constructor(props: LoginFormProps) {
     super(props)
 
@@ -28,6 +38,11 @@ export default class LoginForm extends React.Component<
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  /**
+ * Function which runs every time the user modifies values in the input fields
+ * 
+ * Uses event to access the targeted input field and get its new value
+ */
   handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ ...this.state, [event.target.name]: event.target.value })
   }

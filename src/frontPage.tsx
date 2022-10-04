@@ -3,6 +3,11 @@ import backgroundBig from "./images/backgroundBig.jpg";
 import backgroundSmall from "./images/backgroundSmall.jpg";
 import LoginForm, { LoginFormProps } from "./LoginForm";
 
+/**
+ * Exports frontpage 
+ * 
+ * Takes LoginFormProps in as props and send them to the login form 
+ */
 export function FrontPage(props: LoginFormProps) {
   return (
     <div

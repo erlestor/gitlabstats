@@ -11,6 +11,9 @@ import {
 function App() {
   const [showFrontPage, setShowFrontPage] = useState(!hasRepoInformation())
 
+  /**
+   * If the application do have repository information it displays stats page
+   */
   if (!showFrontPage) {
     return (
       <>
@@ -20,6 +23,9 @@ function App() {
     )
   }
 
+  /**
+   * If the application do not have repository information it displays frontpage
+   */
   return (
     <>
       <FrontPage
