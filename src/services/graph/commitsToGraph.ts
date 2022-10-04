@@ -37,7 +37,7 @@ const getDatesAsData = (
 }
 
 // Checks if a commit is created inside the timeframe given. Eg. is it in the last week
-const inDateSpan = (timeFrame: string, commit: Commit) => {
+const inDateSpan = (timeFrame: string, commit: Commit): boolean => {
   const dateSpan = getDateSpan(timeFrame)
   const startDate = dateSpan[0]
   const endDate = dateSpan[1]
