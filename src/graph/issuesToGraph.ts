@@ -69,7 +69,7 @@ const getFormattedDate = (timeFrame: string, date: Date) => {
 
 const getDatesAsData = (
   timeFrame: string,
-  showUsers: string[]
+  selectedUsers: Set<string>
 ): Datapoint[] => {
   const dateSpan = getDateSpan(timeFrame)
   const datesInRange = getDatesInRange(timeFrame, dateSpan[0], dateSpan[1])
@@ -78,7 +78,7 @@ const getDatesAsData = (
   datesInRange.forEach((date) => {
     const formattedDate = getFormattedDate(timeFrame, date)
     let datapoint = { name: formattedDate }
-    showUsers.forEach((user) => {
+    selectedUsers.forEach((user) => {
       datapoint = {
         ...datapoint,
         [user]: 0,
@@ -100,11 +100,11 @@ const inDateSpan = (timeFrame: string, issue: Issue) => {
 
 export const getIssueGraphData = (
   timeFrame: string,
-  showUsers: string[],
+  selectedUsers: Set<string>,
   issues: any
 ): Datapoint[] => {
   // data is now a list with all the dates/months and the user values for each month set to 0
-  const data = getDatesAsData(timeFrame, showUsers)
+  const data = getDatesAsData(timeFrame, selectedUsers)
 
   let joinedIssues: Issue[] = []
   issues.forEach((issueList: any) => {
@@ -113,7 +113,7 @@ export const getIssueGraphData = (
 
   const filteredIssues = joinedIssues.filter(
     (issue) =>
-      inDateSpan(timeFrame, issue) && showUsers.includes(issue.authorName)
+      inDateSpan(timeFrame, issue) && selectedUsers.has(issue.authorName)
   )
 
   filteredIssues.forEach((issue) => {

@@ -47,4 +47,7 @@
   .setFilterBtn {
     display: block;
   }
+  .scrollWrapper {
+    overflow-y: unset;
+  }
 }

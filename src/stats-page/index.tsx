@@ -1,5 +1,5 @@
 import { createContext, useState } from "react"
-import { getFilterInformation } from "../getRepoInformation"
+import { getFilterInformation } from "../authentication/getRepoInformation"
 import Graphs from "./graphs"
 import { FilterOptions } from "./IFilterOptions"
 import styles from "./index.module.css"
@@ -17,7 +17,7 @@ export default function StatsPage() {
   const [filterOptions, setFilterOptions] = useState<FilterOptions>(() => {
     const filterInformation = getFilterInformation()
     if (filterInformation) return filterInformation
-    return { persons: {}, selectedTimeFrame: timeFrames[0] }
+    return { selectedUsers: new Set(), selectedTimeFrame: timeFrames[0] }
   })
 
   const [showFilterOptionsFullScreen, setShowFilterOptionsFullScreen] =

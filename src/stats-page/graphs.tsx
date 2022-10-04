@@ -6,17 +6,6 @@ import IssuesGraph from "../graph/IssuesGraph"
 export default function Graphs() {
   const { filterOptions } = useContext(FilterOptionsContext)!
 
-  const getShowUsers = () => {
-    const persons = filterOptions.persons
-    const showUsers = []
-
-    for (const [key, value] of Object.entries(persons)) {
-      if (value) showUsers.push(key)
-    }
-
-    return showUsers
-  }
-
   const getTimeFrame = () => {
     const selectedTimeFrame = filterOptions.selectedTimeFrame
     return selectedTimeFrame.split(" ")[1]
@@ -24,8 +13,8 @@ export default function Graphs() {
 
   return (
     <>
-      <CommitsGraph showUsers={getShowUsers()} timeFrame={getTimeFrame()} />
-      <IssuesGraph showUsers={getShowUsers()} timeFrame={getTimeFrame()} />
+      <CommitsGraph selectedUsers={filterOptions.selectedUsers} timeFrame={getTimeFrame()} />
+      <IssuesGraph selectedUsers={filterOptions.selectedUsers} timeFrame={getTimeFrame()} />
     </>
   )
 }

@@ -5,12 +5,12 @@ import Header from "./header/header";
 import StatsPage from "./stats-page";
 
 function App() {
-  const [showFrontPage, setShowFrontPage] = useState(!hasRepoInformation());
+  const [showAuthenticationPage, setShowAuthenticationPage] = useState(!hasRepoInformation());
 
-  if (!showFrontPage) {
+  if (!showAuthenticationPage) {
     return (
       <>
-        <Header setShowFrontPage={setShowFrontPage} />
+        <Header setShowAuthenticationPage={setShowAuthenticationPage} />
         <StatsPage />
       </>
     );
@@ -21,9 +21,9 @@ function App() {
       <AuthenticationPage
         callback={(repoInformation: RepoInformation) => {
           saveRepoInformation(repoInformation);
-          setShowFrontPage(false);
+          setShowAuthenticationPage(false);
         }}
-      />
+      /> 
     </>
   );
 }
