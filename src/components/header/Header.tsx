@@ -17,7 +17,7 @@ export default function Header(props: {
     <header className={styles.header}>
       <h1 data-testid="header">GitLab Stats Pro</h1>
       <button onClick={handleLogout} data-testid="header-log-out">
-        Logout
+        Switch Repository
       </button>
     </header>
   )
