@@ -1,5 +1,10 @@
 import styles from "./header.module.css"
 
+/**
+ * Exports header
+ *
+ * Takes setShowFrontPage as props which decides whether the user is displayed frontpage or analytics page
+ */
 export default function Header(props: {
   setShowAuthenticationPage: (show: boolean) => void
 }) {

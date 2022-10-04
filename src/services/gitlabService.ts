@@ -43,8 +43,12 @@ export const getAllMembers = async (id: number): Promise<Member[]> => {
   })
 }
 
+/* Formats the data from the commit API call to be compatible with the graph
+* Parameters: the data to format
+* Returns an array with the data.
+*/
 const dataToGraphCommits = (data: Commit[]): Commit[] => {
-  let users = new Set(data.map((commit: Commit) => commit.author_name))
+  const users = new Set(data.map((commit: Commit) => commit.author_name))
 
   const graphCommits: any = []
   users.forEach((user: any) => {
@@ -79,8 +83,14 @@ const dataToGraphCommits = (data: Commit[]): Commit[] => {
   return graphCommits
 }
 
-// Get commits sorted on given dates
-// Have to pass in undefined for startdate to get correct enddate
+/*Get the commits. Can be filtered by dates.
+* Have to pass in undefined for startdate to get correct end date
+* Parameters: the project ID as a number
+* The start date and end dates as string. 
+* These are optional.
+* Return an array of commits formated by dataToGraphCommits
+* Throws an error if the status in not 200
+*/
 export const getCommits = async (
   projectId: number,
   since?: string,
@@ -102,6 +112,10 @@ export const getCommits = async (
   })
 }
 
+/* Formats the data from the issues API call to be compatible with the graph
+* Parameters: the data to format
+* Returns an array with the data.
+*/
 const dataToGraphIssues = (data: any) => {
   let users = data.map((issue: Issue) => issue.author.name)
   users = new Set(users)
@@ -141,6 +155,13 @@ const dataToGraphIssues = (data: any) => {
   return graphIssues
 }
 
+
+/*Get the issues. Can filter by a start date
+* Parameters: the project ID as a number
+* Optional start date as a string. 
+* Return an array of issues returned by dataToGraphIssues
+* Throws an error if the status in not 200
+*/
 export const getIssues = async (
   projectId: number,
   createdAfter?: string
@@ -161,7 +182,11 @@ export const getIssues = async (
   })
 }
 
-/** Throws an error if repo information is not valid */
+/* Used to validate if the repo information inputed by the user is valid.
+* Parameters: the repo information
+* return: True if the status is 200.
+* Throws an error if it is not 200 or if the input is empty.
+*/
 export const validateRepoInformation = async (
   repoInformation: RepoInformation
 ): Promise<void> => {
