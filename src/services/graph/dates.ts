@@ -38,6 +38,8 @@ export const getDatesInRange = (
     else date.setDate(date.getDate() + 1)
   }
 
+  if (timeFrame === "year") dates.shift()
+
   return dates
 }
 
