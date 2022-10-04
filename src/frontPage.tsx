@@ -1,4 +1,8 @@
 import styles from "./frontPage.module.css";
+/*
+ * Backgroundimage from:
+ * https://www.freepik.com/free-vector/white-minimal-hexagons-background_13107746.htm#query=simplistic&position=45&from_view=search
+*/
 import backgroundBig from "./images/backgroundBig.jpg";
 import backgroundSmall from "./images/backgroundSmall.jpg";
 import LoginForm, { LoginFormProps } from "./LoginForm";
