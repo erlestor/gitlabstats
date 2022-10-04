@@ -15,7 +15,7 @@ describe("App", () => {
 
   it("renders App component", async () => {
     render(<App />);
-    expect(screen.getByText("Logg inn")).toBeInTheDocument();
+    expect(screen.getByText("OK")).toBeInTheDocument();
     // insert token and project id
     fireEvent.change(screen.getByPlaceholderText("ProjectID"), {
       target: { value: testProjectId },
@@ -28,10 +28,10 @@ describe("App", () => {
     // click login button
     userEvent.click(screen.getByTestId("loginBtn"));
     // check if login was successful
-    await waitFor(() => expect(screen.queryByText("Logg inn")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText("OK")).not.toBeInTheDocument());
 
     // should get straight to stats page
     render(<App />);
-    expect(screen.queryByText("Logg inn")).not.toBeInTheDocument();
+    expect(screen.queryByText("OK")).not.toBeInTheDocument();
   });
 });

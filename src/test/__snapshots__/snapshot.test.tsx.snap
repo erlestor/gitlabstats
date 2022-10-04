@@ -13,7 +13,7 @@ Object {
         >
           <form>
             <h3>
-              LOGG INN
+              Insert Repository Information
             </h3>
             <input
               name="token"
@@ -33,7 +33,7 @@ Object {
             <button
               data-testid="loginBtn"
             >
-              Logg inn
+              OK
             </button>
           </form>
         </div>
@@ -49,7 +49,7 @@ Object {
       >
         <form>
           <h3>
-            LOGG INN
+            Insert Repository Information
           </h3>
           <input
             name="token"
@@ -69,7 +69,7 @@ Object {
           <button
             data-testid="loginBtn"
           >
-            Logg inn
+            OK
           </button>
         </form>
       </div>
