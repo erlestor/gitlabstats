@@ -1,6 +1,5 @@
 {
   "name": "gitlab-repo-statistics",
-  "homepage": "/project2",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
